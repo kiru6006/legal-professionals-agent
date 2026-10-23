@@ -133,14 +133,69 @@ def get_llm_provider() -> BaseLLMProvider:
 
 
 class _MockProvider(BaseLLMProvider):
-    """Fallback mock for development without API keys."""
+    """Fallback mock for development without external API keys."""
     async def complete(self, prompt: str, system: Optional[str] = None, temperature: float = 0.1) -> LLMResponse:
-        if "intent" in prompt.lower():
+        combined = f"{system or ''} {prompt}".lower()
+        
+        # Profile extraction request
+        if "extract professional profile" in combined or "profile extraction" in combined:
+            years = 12 if "2012" in combined else 8
             return LLMResponse(
-                content='{"intent": "PROFESSIONAL_DISCOVERY", "confidence": 0.85, "location": null, "practice_area": null, "court": null, "service_required": null, "languages": [], "min_experience_years": null}',
-                model="mock",
+                content=json.dumps({
+                    "years_of_experience": years,
+                    "practice_areas": ["Civil Litigation", "Constitutional Law", "Property Law"],
+                    "courts": ["Madras High Court", "Madurai Bench of Madras High Court"],
+                    "services_offered": ["Court Appearance", "Local Counsel", "Legal Opinion"],
+                    "languages": ["Tamil", "English"]
+                }),
+                model="mock-rule-engine",
             )
+
+        # Natural language query parsing (inspect user query text specifically)
+        prompt_lower = prompt.lower()
+        location = None
+        for dist in ["salem", "madurai", "coimbatore", "chennai", "trichy", "tiruchirappalli", "vellore", "tirunelveli", "erode"]:
+            if dist in prompt_lower:
+                location = dist.capitalize()
+                break
+
+        practice_area = None
+        if "criminal" in combined or "bail" in combined:
+            practice_area = "Criminal Law"
+        elif "civil" in combined:
+            practice_area = "Civil Litigation"
+        elif "corporate" in combined or "commercial" in combined:
+            practice_area = "Corporate & Commercial Law"
+        elif "arbitration" in combined:
+            practice_area = "Arbitration"
+
+        court = None
+        if "high court" in combined:
+            court = "Madras High Court"
+        elif "sessions" in combined:
+            court = f"Principal Sessions Court, {location}" if location else "Principal Sessions Court"
+        elif "district court" in combined:
+            court = f"Principal District Court, {location}" if location else "Principal District Court"
+
+        service = None
+        if "appearance" in combined:
+            service = "Court Appearance"
+        elif "local counsel" in combined:
+            service = "Local Counsel"
+        elif "bail" in combined:
+            service = "Bail Application"
+
         return LLMResponse(
-            content='{"result": "mock_response"}',
-            model="mock",
+            content=json.dumps({
+                "intent": "PROFESSIONAL_DISCOVERY",
+                "confidence": 0.92,
+                "location": location,
+                "practice_area": practice_area,
+                "court": court,
+                "service_required": service,
+                "languages": ["English", "Tamil"] if ("tamil" in combined or "english" in combined) else [],
+                "min_experience_years": 10 if "senior" in combined or "10" in combined or "15" in combined else None,
+                "clarification_needed": None
+            }),
+            model="mock-rule-engine",
         )

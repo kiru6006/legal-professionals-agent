@@ -53,6 +53,8 @@ dist-ssr/
 
 # Database & Local Storage
 *.sqlite3
+*.db
+*.tsbuildinfo
 pgdata/
 miniodata/
 redisdata/

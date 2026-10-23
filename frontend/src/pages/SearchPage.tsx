@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Search as SearchIcon, Sparkles, Filter, AlertCircle, Loader2 } from 'lucide-react'
+import { Search as SearchIcon, Sparkles, AlertCircle, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { CandidateResultCard } from '@/components/search/CandidateResultCard'
 import { DiscoveryResponse } from '@/types'
@@ -19,11 +19,46 @@ export const SearchPage: React.FC = () => {
     setError(null)
 
     try {
-      const response = await api.post<DiscoveryResponse>('/ai/ask-network', {
+      const response = await api.post('/ai/ask-network', {
         query: query.trim(),
         include_unclaimed: true,
       })
-      setResult(response.data)
+      const data = response.data
+      const transformedCandidates = (data.recommendations || []).map((rec: any) => ({
+        profile_id: rec.profile_id,
+        full_name: rec.full_name,
+        enrollment_number: rec.enrollment_number,
+        primary_district: rec.district,
+        years_of_experience: rec.years_experience,
+        confidence_score: rec.confidence === 'HIGH' ? 0.95 : rec.confidence === 'MEDIUM' ? 0.75 : 0.5,
+        confidence_tier: rec.confidence,
+        matching_practice_areas: rec.match_reasons?.filter((r: string) => r.includes('profile') || r.includes('Law')) || [],
+        matching_courts: rec.primary_court ? [rec.primary_court] : [],
+        matching_services: [],
+        grounding_reasons: (rec.match_reasons || []).map((r: string) => ({
+          claim: r,
+          source_field: 'profile',
+          verified: true,
+        })),
+        information_gaps: rec.missing_information || [],
+        is_bar_verified: rec.is_verified || false,
+      }))
+
+      setResult({
+        query: query.trim(),
+        interpreted_intent: {
+          raw_query: query.trim(),
+          practice_areas: data.parsed_parameters?.practice_area ? [data.parsed_parameters.practice_area] : [],
+          court_names: data.parsed_parameters?.court ? [data.parsed_parameters.court] : [],
+          districts: data.parsed_parameters?.location ? [data.parsed_parameters.location] : [],
+          service_names: data.parsed_parameters?.service_required ? [data.parsed_parameters.service_required] : [],
+          urgency_tier: 'NORMAL',
+          reasoning_summary: `Classified as ${data.intent_detected} with ${Math.round(data.confidence * 100)}% confidence`,
+        },
+        total_matches: transformedCandidates.length,
+        candidates: transformedCandidates,
+        search_mode: 'deterministic_grounded',
+      })
     } catch (err: unknown) {
       console.error(err)
       setError('Search failed. Please ensure the backend server is running.')

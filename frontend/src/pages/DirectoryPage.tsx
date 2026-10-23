@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Scale, Search, ShieldCheck, MapPin, CheckCircle, ExternalLink } from 'lucide-react'
+import { Search, ShieldCheck, MapPin, CheckCircle } from 'lucide-react'
 import { DirectoryRecord } from '@/types'
 import { api } from '@/lib/api'
 import { Button } from '@/components/ui/Button'

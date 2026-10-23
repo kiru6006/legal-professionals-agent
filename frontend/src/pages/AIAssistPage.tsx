@@ -18,7 +18,7 @@ Available for local appearances, filing caveat petitions, and preparing legal op
     setLoading(true)
     try {
       const res = await api.post('/ai/extract-profile', { raw_text: bioText })
-      setExtractedData(res.data.extracted)
+      setExtractedData(res.data.extracted_draft || res.data.extracted)
     } catch (err) {
       console.error('AI Profile extraction error', err)
     } finally {

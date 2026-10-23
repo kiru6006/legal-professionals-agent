@@ -20,7 +20,9 @@ class ConfidenceLevel(str, Enum):
 
 
 class AskNetworkRequest(BaseModel):
-    prompt: str = Field(..., min_length=5, max_length=2000, description="Natural language query")
+    prompt: Optional[str] = Field(None, max_length=2000, description="Natural language query")
+    query: Optional[str] = Field(None, max_length=2000, description="Natural language query (alias for prompt)")
+    include_unclaimed: Optional[bool] = False
 
 
 class ParsedSearchParameters(BaseModel):

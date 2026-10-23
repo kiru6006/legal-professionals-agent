@@ -222,6 +222,7 @@ async def run_discovery_agent(
     stmt = (
         select(ProfessionalProfile)
         .options(
+            selectinload(ProfessionalProfile.user),
             selectinload(ProfessionalProfile.district),
             selectinload(ProfessionalProfile.practice_areas).selectinload(ProfilePracticeArea.practice_area),
             selectinload(ProfessionalProfile.courts).selectinload(ProfileCourt.court).selectinload(Court.district),

@@ -1,7 +1,7 @@
 import React from 'react'
 import { CheckCircle2, ShieldCheck, MapPin, Briefcase, Award } from 'lucide-react'
 import { RecommendedCandidate } from '@/types'
-import { GroundedBadge } from './GroundedBadge'
+import { GroundedBadge } from '@/components/ai/GroundedBadge'
 import { Button } from '@/components/ui/Button'
 import { Link } from 'react-router-dom'
 

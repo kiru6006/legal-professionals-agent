@@ -306,3 +306,12 @@ CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 2. **Provenance Preservation**:
    - `directory_records` stores original source name and ingest timestamp.
    - Initial state is strictly `UNCLAIMED`, `is_verified = FALSE`.
+
+---
+
+## 4. Multi-Engine & Local Development Compatibility
+
+The SQLAlchemy 2.0 ORM layer is engineered to be dialect-agnostic:
+- **Primary / Production**: PostgreSQL 16 with `UUID`, `JSONB`, `ARRAY`, and `pgvector.sqlalchemy.Vector`.
+- **Local Embedded Development**: SQLite (`aiosqlite`) using standard `GUID` type decorators, JSON serialization, and deterministic SQL filtering fallback.
+- **Switching**: Driven purely by `DATABASE_URL` in `.env` without altering application logic or database queries.

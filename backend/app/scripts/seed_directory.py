@@ -18,9 +18,13 @@ from pathlib import Path
 from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
-from app.core.database import AsyncSessionLocal
-from app.models.user import District, Court, PracticeArea, Service, DirectoryRecord, RecordStatus
+from app.core.database import AsyncSessionLocal, engine, Base
+from app.models.user import (
+    District, Court, PracticeArea, Service, DirectoryRecord, RecordStatus,
+    User, ProfessionalProfile, ProfilePracticeArea, ProfileCourt, ProfileServiceOffered, UserRole,
+)
 
 
 DISTRICTS = [
@@ -219,8 +223,104 @@ async def seed_directory_records(db: AsyncSession, csv_path: Optional[str] = Non
     print(f"✓ Seeded {inserted} directory records (status: UNCLAIMED)")
 
 
+async def seed_sample_published_profiles(db: AsyncSession, district_map: dict):
+    # Check if sample profile already exists
+    existing = await db.execute(select(User).where(User.email == "ramanathan.salem@legalnet.in"))
+    if existing.scalar_one_or_none():
+        return
+
+    # Fetch taxonomy references
+    pa_res = await db.execute(select(PracticeArea))
+    pa_map = {pa.slug: pa for pa in pa_res.scalars().all()}
+
+    court_res = await db.execute(select(Court))
+    court_map = {c.name: c for c in court_res.scalars().all()}
+
+    svc_res = await db.execute(select(Service))
+    svc_map = {s.slug: s for s in svc_res.scalars().all()}
+
+    # 1. Adv. S. Ramanathan (Salem Criminal Lawyer)
+    u1 = User(
+        email="ramanathan.salem@legalnet.in",
+        password_hash="$2b$12$e8kPqZ9X5V9L3y8t0zK8.uF1iR3rZ5P9l7u0y2x4v6b8n0m", # dummy bcrypt
+        role=UserRole.ADVOCATE_VERIFIED,
+        is_verified=True,
+    )
+    db.add(u1)
+    await db.flush()
+
+    salem_district = district_map.get("Salem")
+    p1 = ProfessionalProfile(
+        user_id=u1.id,
+        full_name="Adv. S. Ramanathan",
+        enrollment_number="TN/01001/2010",
+        designation="Advocate",
+        years_of_experience=14,
+        district_id=salem_district.id if salem_district else None,
+        headline="Senior Criminal Defense Advocate, Salem",
+        bio="Practicing trial and appellate advocate before the Principal Sessions Court, Salem and Madras High Court with 14 years of defense experience.",
+        phone_number="+91 94431 82910",
+        languages=["Tamil", "English"],
+        is_profile_published=True,
+    )
+    db.add(p1)
+    await db.flush()
+
+    if "criminal-law" in pa_map:
+        db.add(ProfilePracticeArea(profile_id=p1.id, practice_area_id=pa_map["criminal-law"].id, is_primary=True, years_focused=14))
+    if "Principal Sessions Court, Salem" in court_map:
+        db.add(ProfileCourt(profile_id=p1.id, court_id=court_map["Principal Sessions Court, Salem"].id, is_regular=True))
+    if "court-appearance" in svc_map:
+        db.add(ProfileServiceOffered(profile_id=p1.id, service_id=svc_map["court-appearance"].id, is_active=True))
+    if "local-counsel" in svc_map:
+        db.add(ProfileServiceOffered(profile_id=p1.id, service_id=svc_map["local-counsel"].id, is_active=True))
+
+    # 2. Adv. P. Meenakshi (Madurai Civil & High Court Lawyer)
+    u2 = User(
+        email="meenakshi.madurai@legalnet.in",
+        password_hash="$2b$12$e8kPqZ9X5V9L3y8t0zK8.uF1iR3rZ5P9l7u0y2x4v6b8n0m",
+        role=UserRole.ADVOCATE_VERIFIED,
+        is_verified=True,
+    )
+    db.add(u2)
+    await db.flush()
+
+    madurai_district = district_map.get("Madurai")
+    p2 = ProfessionalProfile(
+        user_id=u2.id,
+        full_name="Adv. P. Meenakshi",
+        enrollment_number="TN/01002/2012",
+        designation="Advocate",
+        years_of_experience=12,
+        district_id=madurai_district.id if madurai_district else None,
+        headline="Civil Litigation & Appellate Counsel, Madurai Bench",
+        bio="Specializing in civil appeals, writ petitions, and land disputes before the Madurai Bench of Madras High Court.",
+        phone_number="+91 98421 54321",
+        languages=["Tamil", "English"],
+        is_profile_published=True,
+    )
+    db.add(p2)
+    await db.flush()
+
+    if "civil-litigation" in pa_map:
+        db.add(ProfilePracticeArea(profile_id=p2.id, practice_area_id=pa_map["civil-litigation"].id, is_primary=True, years_focused=12))
+    if "constitutional-law" in pa_map:
+        db.add(ProfilePracticeArea(profile_id=p2.id, practice_area_id=pa_map["constitutional-law"].id, is_primary=False, years_focused=8))
+    if "Madurai Bench of Madras High Court" in court_map:
+        db.add(ProfileCourt(profile_id=p2.id, court_id=court_map["Madurai Bench of Madras High Court"].id, is_regular=True))
+    if "court-appearance" in svc_map:
+        db.add(ProfileServiceOffered(profile_id=p2.id, service_id=svc_map["court-appearance"].id, is_active=True))
+
+    await db.flush()
+    print("✓ Seeded sample published verified advocate profiles")
+
+
 async def run_seed(csv_path: Optional[str] = None):
     print("🌱 Starting Legal Professionals Network seed process...")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("✓ Tables initialized.")
+
     async with AsyncSessionLocal() as db:
         try:
             district_map = await seed_districts(db)
@@ -228,6 +328,7 @@ async def run_seed(csv_path: Optional[str] = None):
             await seed_practice_areas(db)
             await seed_services(db)
             await seed_directory_records(db, csv_path)
+            await seed_sample_published_profiles(db, district_map)
             await db.commit()
             print("✅ Seed completed successfully!")
         except Exception as e:

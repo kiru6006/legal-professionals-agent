@@ -93,6 +93,7 @@ async def update_services(
 # ─── Directory ────────────────────────────────────────────────────────────────
 
 
+@directory_router.get("", response_model=List[DirectoryRecordPublic])
 @directory_router.get("/", response_model=List[DirectoryRecordPublic])
 async def search_directory(
     q: Optional[str] = Query(None, description="Search by name or enrollment number"),

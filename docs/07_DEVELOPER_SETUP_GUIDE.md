@@ -71,12 +71,16 @@ docker compose up -d
 
 ## 3. Backend Setup (FastAPI & Python 3.11+)
 
+The backend supports two database backends:
+- **Production / Full Stack**: PostgreSQL 16 with `pgvector`
+- **Rapid Local Development**: Embedded SQLite with `aiosqlite` (Zero external setup)
+
+### Quick Start (Local SQLite Mode)
 1. Navigate to the backend directory and set up a virtual environment:
    ```bash
    cd backend
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install --upgrade pip
+   python3 -m venv venv
+   source venv/bin/activate
    pip install -r requirements.txt
    ```
 
@@ -84,43 +88,47 @@ docker compose up -d
    ```env
    PROJECT_NAME="Legal Professionals Network"
    ENVIRONMENT="development"
-   SECRET_KEY="replace-this-with-a-secure-random-secret"
+   SECRET_KEY="dev-secret-key-32-chars-long-demo-local"
    ACCESS_TOKEN_EXPIRE_MINUTES=15
 
-   # Database
+   # Database (Local SQLite)
+   DATABASE_URL="sqlite+aiosqlite:///./legalnet.db"
+
+   # LLM Provider Configuration (mock fallback for offline testing)
+   DEFAULT_LLM_PROVIDER="mock" # options: gemini, openai, anthropic, ollama, mock
+   ```
+
+3. Initialize the database and populate seed taxonomy & sample advocate records:
+   ```bash
+   python -m app.scripts.seed_directory
+   ```
+
+4. Launch the backend API server:
+   ```bash
+   uvicorn app.main:app --reload --port 8000
+   ```
+   API Documentation is available at: `http://localhost:8000/docs`
+
+---
+
+### Production / PostgreSQL Mode
+1. Ensure PostgreSQL 16 + pgvector container or service is running:
+   ```bash
+   docker compose up -d postgres redis minio
+   ```
+
+2. Update `backend/.env` with your PostgreSQL credentials:
+   ```env
    DATABASE_URL="postgresql+asyncpg://legalnet_user:legalnet_secure_password@localhost:5432/legalnet_db"
-
-   # Redis
-   REDIS_URL="redis://localhost:6379/0"
-
-   # S3 / MinIO
-   S3_ENDPOINT_URL="http://localhost:9000"
-   S3_ACCESS_KEY="minio_admin"
-   S3_SECRET_KEY="minio_secret_password"
-   S3_BUCKET_NAME="legalnet-documents"
-
-   # LLM Provider Configuration
-   DEFAULT_LLM_PROVIDER="gemini" # options: gemini, openai, anthropic, ollama
+   DEFAULT_LLM_PROVIDER="gemini" # or openai, anthropic, ollama
    GEMINI_API_KEY="your-gemini-api-key"
-   OPENAI_API_KEY="your-openai-api-key"
-   OLLAMA_BASE_URL="http://localhost:11434"
    ```
 
 3. Run database migrations:
    ```bash
    alembic upgrade head
-   ```
-
-4. Ingest seed directory data (30,000 Tamil Nadu advocate records):
-   ```bash
    python -m app.scripts.seed_directory
    ```
-
-5. Launch the backend API server:
-   ```bash
-   uvicorn app.main:app --reload --port 8000
-   ```
-   API Documentation is available at: `http://localhost:8000/docs`
 
 ---
 

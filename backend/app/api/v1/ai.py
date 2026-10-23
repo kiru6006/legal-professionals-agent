@@ -15,6 +15,7 @@ router = APIRouter(prefix="/ai", tags=["AI Agents"])
 
 
 @router.post("/ask", response_model=AskNetworkResponse)
+@router.post("/ask-network", response_model=AskNetworkResponse)
 async def ask_network(
     request: AskNetworkRequest,
     db: AsyncSession = Depends(get_db),
@@ -27,7 +28,8 @@ async def ask_network(
     """
     actor_id = current_user.id if current_user else None
 
-    response = await run_discovery_agent(db, request.prompt, actor_id=actor_id)
+    prompt = request.prompt or request.query
+    response = await run_discovery_agent(db, prompt, actor_id=actor_id)
 
     # Audit the AI interaction
     await write_audit_log(
@@ -36,7 +38,7 @@ async def ask_network(
         entity_name="AIInteraction",
         actor_id=actor_id,
         metadata={
-            "prompt": request.prompt[:200],
+            "prompt": prompt[:200],
             "intent_detected": response.intent_detected.value,
             "recommendations_count": len(response.recommendations),
             "confidence": response.confidence,
@@ -47,10 +49,11 @@ async def ask_network(
 
 
 @router.post("/profiles/extract", response_model=AIExtractResponse)
+@router.post("/extract-profile", response_model=AIExtractResponse)
 async def extract_profile_ai(
     request: AIExtractRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_optional_user),
 ):
     """
     AI Profile Intelligence — extract structured profile data from bio/resume text.
@@ -62,7 +65,7 @@ async def extract_profile_ai(
         db,
         event_type="AI_PROFILE_EXTRACT",
         entity_name="ProfessionalProfile",
-        actor_id=current_user.id,
+        actor_id=current_user.id if current_user else None,
         metadata={"text_length": len(request.raw_text)},
     )
 

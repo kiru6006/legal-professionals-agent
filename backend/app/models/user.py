@@ -7,9 +7,47 @@ from sqlalchemy import (
     ForeignKey, UniqueConstraint, Index, JSON
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
-from pgvector.sqlalchemy import Vector
+from sqlalchemy.types import TypeDecorator, CHAR
 from app.core.database import Base
+
+
+class GUID(TypeDecorator):
+    """Platform-independent GUID type.
+    Uses PostgreSQL's UUID type, otherwise uses CHAR(36), storing as stringified hex values.
+    """
+    impl = CHAR
+    cache_ok = True
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            from sqlalchemy.dialects.postgresql import UUID
+            return dialect.type_descriptor(UUID_TYPE)
+        else:
+            return dialect.type_descriptor(CHAR(36))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == "postgresql":
+            return str(value)
+        else:
+            if not isinstance(value, uuid.UUID):
+                return str(uuid.UUID(value))
+            return str(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            if not isinstance(value, uuid.UUID):
+                value = uuid.UUID(value)
+            return value
+
+
+UUID_TYPE = GUID()
+JSON_TYPE = JSON
+ARRAY_TYPE = JSON
+VECTOR_TYPE = JSON
 
 
 # ─── Enums ──────────────────────────────────────────────────────────────────
@@ -54,7 +92,7 @@ class DirectoryRecord(Base):
     __tablename__ = "directory_records"
 
     id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+        UUID_TYPE, primary_key=True, default=uuid.uuid4
     )
     enrollment_number: Mapped[str] = mapped_column(String(100), unique=True, nullable=False, index=True)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -64,14 +102,14 @@ class DirectoryRecord(Base):
     source_name: Mapped[str] = mapped_column(
         String(100), default="Tamil Nadu Advocate Directory 2024"
     )
-    source_provenance: Mapped[dict] = mapped_column(JSONB, default=dict)
+    source_provenance: Mapped[dict] = mapped_column(JSON_TYPE, default=dict)
     record_status: Mapped[RecordStatus] = mapped_column(
         SAEnum(RecordStatus, name="record_status_enum"),
         default=RecordStatus.UNCLAIMED,
         nullable=False,
         index=True,
     )
-    claimed_user_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
+    claimed_user_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID_TYPE)
     claimed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
@@ -90,7 +128,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+        UUID_TYPE, primary_key=True, default=uuid.uuid4
     )
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
     phone_number: Mapped[Optional[str]] = mapped_column(String(30), unique=True)
@@ -129,7 +167,7 @@ class User(Base):
 class District(Base):
     __tablename__ = "districts"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     state: Mapped[str] = mapped_column(String(100), default="Tamil Nadu", nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -147,11 +185,11 @@ class Court(Base):
     __tablename__ = "courts"
     __table_args__ = (UniqueConstraint("name", "district_id", name="uq_court_name_district"),)
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     court_type: Mapped[str] = mapped_column(String(100), nullable=False)
     district_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("districts.id")
+        UUID_TYPE, ForeignKey("districts.id")
     )
     jurisdiction_details: Mapped[Optional[str]] = mapped_column(Text)
 
@@ -167,7 +205,7 @@ class Court(Base):
 class PracticeArea(Base):
     __tablename__ = "practice_areas"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(150), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text)
@@ -183,7 +221,7 @@ class PracticeArea(Base):
 class Service(Base):
     __tablename__ = "services"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     title: Mapped[str] = mapped_column(String(150), nullable=False)
     category: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -199,27 +237,27 @@ class Service(Base):
 class ProfessionalProfile(Base):
     __tablename__ = "professional_profiles"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False
+        UUID_TYPE, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False
     )
     directory_record_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("directory_records.id", ondelete="SET NULL")
+        UUID_TYPE, ForeignKey("directory_records.id", ondelete="SET NULL")
     )
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     enrollment_number: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     designation: Mapped[str] = mapped_column(String(100), default="Advocate", nullable=False)
     years_of_experience: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    bar_association_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
+    bar_association_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID_TYPE)
     district_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("districts.id")
+        UUID_TYPE, ForeignKey("districts.id")
     )
     headline: Mapped[Optional[str]] = mapped_column(String(255))
     bio: Mapped[Optional[str]] = mapped_column(Text)
     avatar_url: Mapped[Optional[str]] = mapped_column(Text)
     office_address: Mapped[Optional[str]] = mapped_column(Text)
     phone_number: Mapped[Optional[str]] = mapped_column(String(30))
-    languages: Mapped[Optional[List[str]]] = mapped_column(ARRAY(String), default=list)
+    languages: Mapped[Optional[List[str]]] = mapped_column(ARRAY_TYPE, default=list)
 
     # Privacy settings
     phone_visibility: Mapped[PrivacyLevel] = mapped_column(
@@ -239,11 +277,11 @@ class ProfessionalProfile(Base):
     )
 
     # AI-generated, human-approved
-    ai_profile_insights: Mapped[dict] = mapped_column(JSONB, default=dict)
+    ai_profile_insights: Mapped[dict] = mapped_column(JSON_TYPE, default=dict)
     is_profile_published: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     # Vector & FTS
-    embedding: Mapped[Optional[List[float]]] = mapped_column(Vector(1536))
+    embedding: Mapped[Optional[List[float]]] = mapped_column(VECTOR_TYPE)
     search_vector: Mapped[Optional[str]] = mapped_column(Text)  # handled via trigger
 
     created_at: Mapped[datetime] = mapped_column(
@@ -285,11 +323,11 @@ class ProfilePracticeArea(Base):
     )
 
     profile_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("professional_profiles.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("professional_profiles.id", ondelete="CASCADE"),
         primary_key=True,
     )
     practice_area_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("practice_areas.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("practice_areas.id", ondelete="CASCADE"),
         primary_key=True,
     )
     years_focused: Mapped[int] = mapped_column(Integer, default=1)
@@ -310,11 +348,11 @@ class ProfileCourt(Base):
     )
 
     profile_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("professional_profiles.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("professional_profiles.id", ondelete="CASCADE"),
         primary_key=True,
     )
     court_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("courts.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("courts.id", ondelete="CASCADE"),
         primary_key=True,
     )
     is_regular: Mapped[bool] = mapped_column(Boolean, default=True)
@@ -330,11 +368,11 @@ class ProfileServiceOffered(Base):
     )
 
     profile_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("professional_profiles.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("professional_profiles.id", ondelete="CASCADE"),
         primary_key=True,
     )
     service_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("services.id", ondelete="CASCADE"),
+        UUID_TYPE, ForeignKey("services.id", ondelete="CASCADE"),
         primary_key=True,
     )
     details: Mapped[Optional[str]] = mapped_column(Text)
@@ -355,12 +393,12 @@ class Connection(Base):
         UniqueConstraint("sender_profile_id", "receiver_profile_id", name="uq_connection"),
     )
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     sender_profile_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("professional_profiles.id", ondelete="CASCADE")
+        UUID_TYPE, ForeignKey("professional_profiles.id", ondelete="CASCADE")
     )
     receiver_profile_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("professional_profiles.id", ondelete="CASCADE")
+        UUID_TYPE, ForeignKey("professional_profiles.id", ondelete="CASCADE")
     )
     status: Mapped[ConnectionStatus] = mapped_column(
         SAEnum(ConnectionStatus, name="connection_status_enum"),
@@ -387,12 +425,12 @@ class Connection(Base):
 class VerificationRequest(Base):
     __tablename__ = "verification_requests"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+        UUID_TYPE, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     directory_record_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("directory_records.id")
+        UUID_TYPE, ForeignKey("directory_records.id")
     )
     enrollment_number: Mapped[str] = mapped_column(String(100), nullable=False)
     bar_council_id_card_doc_url: Mapped[str] = mapped_column(Text, nullable=False)
@@ -403,7 +441,7 @@ class VerificationRequest(Base):
         nullable=False,
     )
     admin_reviewer_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id")
+        UUID_TYPE, ForeignKey("users.id")
     )
     rejection_reason: Mapped[Optional[str]] = mapped_column(Text)
     submitted_at: Mapped[datetime] = mapped_column(
@@ -422,14 +460,14 @@ class VerificationRequest(Base):
 class AuditLog(Base):
     __tablename__ = "audit_logs"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID_TYPE, primary_key=True, default=uuid.uuid4)
     actor_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL")
+        UUID_TYPE, ForeignKey("users.id", ondelete="SET NULL")
     )
     event_type: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     entity_name: Mapped[str] = mapped_column(String(100), nullable=False)
-    entity_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
-    metadata: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)
+    entity_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID_TYPE)
+    metadata: Mapped[dict] = mapped_column(JSON_TYPE, default=dict, nullable=False)
     ip_address: Mapped[Optional[str]] = mapped_column(String(50))
     user_agent: Mapped[Optional[str]] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(
