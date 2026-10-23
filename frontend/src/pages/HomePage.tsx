@@ -1,93 +1,278 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { ShieldCheck, Search, Users, Cpu, ArrowRight, Award } from 'lucide-react'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import {
+  ShieldCheck,
+  MapPin,
+  Briefcase,
+  ChevronRight,
+  Sparkles,
+  Search
+} from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 export const HomePage: React.FC = () => {
+  const navigate = useNavigate()
+  const [naturalQuery, setNaturalQuery] = useState('')
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!naturalQuery.trim()) return
+    navigate(`/search?q=${encodeURIComponent(naturalQuery.trim())}`)
+  }
+
+  const quickActions = [
+    { label: 'Find Professional', query: 'Find an advocate with appellate experience in High Court' },
+    { label: 'Find Service', query: 'Need a local counsel for court appearance' },
+    { label: 'Ask Network', query: 'Experience with electronic evidence suppression in criminal trials' },
+    { label: 'Find Referral', query: 'Need to refer a civil property dispute in Madurai' },
+    { label: 'Explore Courts', query: 'Advocates practicing before Principal Sessions Court' },
+  ]
+
+  const recommendations = [
+    {
+      name: 'Adv. Ramesh Kumar',
+      role: 'Senior Advocate',
+      practice: 'Corporate Law • Arbitration',
+      location: 'Chennai, Tamil Nadu',
+      experience: '16 years experience',
+      courts: 'Madras High Court, NCLT',
+      why: 'Shared connections (3 mutual referrals) and verified High Court bar record',
+      verified: true,
+      initial: 'R',
+    },
+    {
+      name: 'Adv. Priya Sharma',
+      role: 'Advocate',
+      practice: 'Family Law • Property Litigation',
+      location: 'Bangalore / Coimbatore',
+      experience: '11 years experience',
+      courts: 'High Court, District Courts',
+      why: 'Court jurisdiction overlap and active counsel availability',
+      verified: true,
+      initial: 'P',
+    },
+  ]
+
   return (
-    <div className="space-y-12">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-navy-900 rounded-3xl text-white p-8 md:p-14 shadow-xl border border-navy-800">
-        <div className="max-w-3xl space-y-6">
-          <div className="inline-flex items-center space-x-2 bg-sky-500/10 border border-sky-500/30 px-3.5 py-1.5 rounded-full text-xs font-semibold text-sky-400">
-            <Cpu className="w-3.5 h-3.5 mr-1 text-sky-400" />
-            Zero-Hallucination Legal AI Engine
+    <div className="space-y-8 max-w-5xl mx-auto">
+      {/* User Greeting */}
+      <div className="border-b border-[#E0E0E0] pb-4">
+        <h1 className="text-2xl font-bold text-[#212121]">Welcome, Kirubakaran</h1>
+        <p className="text-sm text-[#666666] mt-0.5">
+          Senior Advocate • Tamil Nadu Bar Council (TN/2015/12345)
+        </p>
+      </div>
+
+      {/* Hero Section: WHAT DO YOU NEED HELP WITH? */}
+      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 sm:p-8 shadow-xs space-y-4">
+        <div className="flex items-center space-x-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#1565C0] flex items-center">
+            <Sparkles className="w-3.5 h-3.5 mr-1" />
+            AI Professional Discovery
+          </span>
+        </div>
+
+        <h2 className="text-xl font-bold text-[#212121]">
+          WHAT DO YOU NEED HELP WITH?
+        </h2>
+
+        <p className="text-xs text-[#666666]">
+          E.g., &ldquo;Find a criminal lawyer in Salem for my client&rdquo; or &ldquo;I need to refer a property dispute to someone&rdquo; or &ldquo;Find arbitration specialists in Chennai&rdquo;
+        </p>
+
+        <form onSubmit={handleSearchSubmit} className="space-y-3">
+          <div className="relative">
+            <input
+              type="text"
+              value={naturalQuery}
+              onChange={(e) => setNaturalQuery(e.target.value)}
+              placeholder="Describe your requirement naturally..."
+              className="w-full pl-4 pr-32 py-3.5 border border-[#E0E0E0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0D47A1] focus:border-transparent text-[#212121] placeholder-[#BDBDBD]"
+            />
+            <Button
+              type="submit"
+              className="absolute right-2 top-2 h-9 px-5 bg-[#0D47A1] text-white hover:bg-[#0B3C8A] rounded-md font-medium text-xs flex items-center"
+            >
+              <Search className="w-3.5 h-3.5 mr-1.5" />
+              ⚡ SEARCH
+            </Button>
           </div>
+        </form>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            AI-Powered Legal Professional Network for Advocates and Counsel.
-          </h1>
+        {/* Quick Actions */}
+        <div className="pt-2">
+          <span className="text-xs font-semibold text-[#666666] block mb-2">OR USE QUICK ACTIONS:</span>
+          <div className="flex flex-wrap gap-2">
+            {quickActions.map((action, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setNaturalQuery(action.query)
+                  navigate(`/search?q=${encodeURIComponent(action.query)}`)
+                }}
+                className="text-xs bg-[#FAFAFA] hover:bg-slate-100 text-[#546E7A] font-medium border border-[#E0E0E0] px-3 py-1.5 rounded-md transition-colors"
+              >
+                [ {action.label} ]
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
-            Find verified colleagues across all 38 districts of Tamil Nadu, High Courts, and subordinate tribunals. Grounded recommendations with zero hallucinated claims.
+      {/* RECOMMENDED FOR YOU */}
+      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-4">
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
+            RECOMMENDED FOR YOU
+          </h2>
+          <p className="text-xs text-[#666666]">
+            Based on your network graph, practice area overlap, and verified Bar records:
           </p>
+        </div>
 
-          <div className="pt-4 flex flex-wrap gap-4">
-            <Link to="/search">
-              <Button size="lg" className="bg-sky-500 hover:bg-sky-600 text-white font-semibold flex items-center">
-                <Search className="w-4 h-4 mr-2" />
-                Find an Advocate
-              </Button>
-            </Link>
-            <Link to="/directory">
-              <Button size="lg" variant="outline" className="border-slate-700 text-white hover:bg-navy-800 flex items-center">
-                <ShieldCheck className="w-4 h-4 mr-2 text-emerald-400" />
-                Claim Your Profile
-              </Button>
-            </Link>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {recommendations.map((rec, idx) => (
+            <div
+              key={idx}
+              className="border border-[#E0E0E0] rounded-lg p-4 bg-[#FAFAFA] flex flex-col justify-between space-y-3 hover:border-slate-300 transition-colors"
+            >
+              <div>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#212121] flex items-center gap-1.5">
+                      {rec.name}
+                      {rec.verified && (
+                        <span className="inline-flex items-center text-[10px] font-semibold text-[#2E7D32] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                          <ShieldCheck className="w-3 h-3 mr-0.5" />
+                          Verified
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-xs text-[#546E7A] mt-0.5">{rec.role}</p>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-white border border-[#E0E0E0] flex items-center justify-center font-bold text-xs text-[#0D47A1]">
+                    {rec.initial}
+                  </div>
+                </div>
+
+                <div className="mt-2 text-xs space-y-1 text-[#666666]">
+                  <div className="font-medium text-[#212121]">{rec.practice}</div>
+                  <div className="flex items-center text-xs">
+                    <MapPin className="w-3 h-3 mr-1 text-slate-400" />
+                    {rec.location}
+                  </div>
+                  <div className="flex items-center text-xs">
+                    <Briefcase className="w-3 h-3 mr-1 text-slate-400" />
+                    {rec.experience} • {rec.courts}
+                  </div>
+                </div>
+
+                {/* AI Reasoning box */}
+                <div className="mt-3 bg-blue-50/60 border border-blue-100 rounded p-2 text-[11px] text-[#1565C0]">
+                  <span className="font-semibold block">⚡ Why Recommended:</span>
+                  <span className="text-[#546E7A]">{rec.why}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 pt-2 border-t border-[#E0E0E0]">
+                <Link to="/search">
+                  <Button variant="outline" size="sm" className="h-7 text-xs border-[#E0E0E0] text-[#212121]">
+                    View Profile
+                  </Button>
+                </Link>
+                <Link to="/messages">
+                  <Button size="sm" className="h-7 text-xs bg-[#0D47A1] text-white hover:bg-[#0B3C8A]">
+                    Connect
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Trust & Stats Bar */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-            <Users className="w-6 h-6" />
-          </div>
+      {/* RELEVANT COMMUNITY DISCUSSIONS */}
+      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-4">
+        <div className="flex items-center justify-between">
           <div>
-            <div className="text-2xl font-bold text-slate-900">30,000+</div>
-            <div className="text-xs text-slate-500 font-medium">Verified Advocate Records</div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600">
-            <Award className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-slate-900">38 Districts</div>
-            <div className="text-xs text-slate-500 font-medium">Tamil Nadu & Pondicherry Courts</div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-slate-900">100% Deterministic</div>
-            <div className="text-xs text-slate-500 font-medium">Bar Verification & Grounded AI</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Discovery Teaser */}
-      <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-slate-900">Experience Intelligent Natural Language Search</h2>
-            <p className="text-slate-600 text-sm max-w-xl">
-              Type naturally in English or Tamil legal context: &quot;Need a criminal appeal advocate in Madurai for Principal Sessions Court appearance tomorrow&quot;.
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
+              RELEVANT COMMUNITY DISCUSSIONS
+            </h2>
+            <p className="text-xs text-[#666666]">
+              Peer exchange on recent judgments, procedural challenges, and trial practice:
             </p>
           </div>
-          <Link to="/search">
-            <Button size="md" className="shrink-0 flex items-center">
-              Try AI Search Now
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+          <Link to="/community" className="text-xs text-[#1565C0] font-medium hover:underline flex items-center">
+            View All Discussions
+            <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
           </Link>
         </div>
+
+        <div className="space-y-3">
+          <div className="border border-[#E0E0E0] rounded-lg p-3.5 bg-[#FAFAFA] hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-[#0D47A1] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  Criminal Law
+                </span>
+                <span className="text-xs font-bold text-[#212121]">
+                  Electronic Evidence in Cross-Examination
+                </span>
+              </div>
+              <p className="text-xs text-[#666666] mt-1">
+                23 professionals participating • 147 messages • Updated 2 hours ago
+              </p>
+            </div>
+            <Link to="/community">
+              <Button variant="outline" size="sm" className="h-8 text-xs shrink-0 border-[#E0E0E0]">
+                View Discussion
+              </Button>
+            </Link>
+          </div>
+
+          <div className="border border-[#E0E0E0] rounded-lg p-3.5 bg-[#FAFAFA] hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-[#546E7A] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  Corporate Law
+                </span>
+                <span className="text-xs font-bold text-[#212121]">
+                  Recent Amendments to DIA Act & Insolvency Timelines
+                </span>
+              </div>
+              <p className="text-xs text-[#666666] mt-1">
+                15 professionals participating • 89 messages • Updated 1 day ago
+              </p>
+            </div>
+            <Link to="/community">
+              <Button variant="outline" size="sm" className="h-8 text-xs shrink-0 border-[#E0E0E0]">
+                View Discussion
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* YOUR RECENT ACTIVITY */}
+      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-3">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-[#666666]">
+          YOUR RECENT ACTIVITY
+        </h2>
+        <ul className="space-y-2 text-xs text-[#546E7A]">
+          <li className="flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0D47A1] mr-2.5" />
+            Connected with Adv. Veera (3 days ago)
+          </li>
+          <li className="flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0D47A1] mr-2.5" />
+            Participated in &ldquo;Bail Bond Calculation&rdquo; practice discussion (1 week ago)
+          </li>
+          <li className="flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0D47A1] mr-2.5" />
+            Received referral request from Adv. Sanjay for Sessions Court counsel (5 days ago)
+          </li>
+        </ul>
       </section>
     </div>
   )
