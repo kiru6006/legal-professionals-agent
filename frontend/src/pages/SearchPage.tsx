@@ -51,6 +51,21 @@ export const SearchPage: React.FC = () => {
   useEffect(() => {
     if (initialQuery) {
       setQuery(initialQuery)
+      const q = initialQuery.trim()
+      const parsedLoc = q.toLowerCase().includes('salem') ? 'Salem, Tamil Nadu' : q.toLowerCase().includes('chennai') ? 'Chennai, Tamil Nadu' : 'Tamil Nadu'
+      const parsedPA = q.toLowerCase().includes('criminal') ? 'Criminal Law' : q.toLowerCase().includes('civil') ? 'Civil Litigation' : 'General Practice'
+      const parsedSvc = 'Court Appearance'
+
+      setInterpreted({
+        raw_query: q,
+        practice_area: parsedPA,
+        location: parsedLoc,
+        additional_expertise: 'Appellate Practice & Trial',
+        service_type: parsedSvc,
+        experience_level: '5+ years',
+        network_preference: 'Verified professionals only',
+      })
+      setStage('interpreted')
       handleAnalyzeQuery(initialQuery)
     }
   }, [initialQuery])
