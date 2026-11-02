@@ -1,5 +1,12 @@
 # Build an AI-Agent-Native Legal Professional Network
 
+[![Deploy to GitHub Pages](https://github.com/kiru6006/legal-professionals-agent/actions/workflows/deploy.yml/badge.svg)](https://github.com/kiru6006/legal-professionals-agent/actions/workflows/deploy.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen?logo=github)](https://kiru6006.github.io/legal-professionals-agent/)
+
+> 🌐 **Live Public Web App**: [https://kiru6006.github.io/legal-professionals-agent/](https://kiru6006.github.io/legal-professionals-agent/)
+>
+> 🚀 **Zero-Configuration Run**: The application works immediately in the browser via GitHub Pages with full client-side deterministic search, AI profile extraction, and authentic Tamil Nadu advocate directory seed data. It also seamlessly connects to the Docker Compose backend (`docker-compose up -d`) when running locally.
+
 ## 1. Product Vision
 
 Build a modern web + mobile-ready platform for lawyers, advocates, law firms, in-house counsel, legal consultants and other verified legal professionals.
