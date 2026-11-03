@@ -4,83 +4,114 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    /* ==========================================================================
+       GLOBAL DESIGN TOKEN SYSTEM
+       ========================================================================== */
+    --color-bg: #F7F6F2;
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #F0EFEA;
+    --color-text-primary: #171717;
+    --color-text-secondary: #686868;
+    --color-text-muted: #929292;
+    --color-border: #D9D7D0;
+    --color-border-strong: #BDBAB1;
+    --color-primary: #111111;
+    --color-primary-soft: #E8E6DF;
+    --color-success: #2F6B4F;
+    --color-warning: #9A6A16;
+    --color-danger: #A63D40;
+    --color-info: #456B8C;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Shadcn/ui mapping to Global Design Tokens */
+    --background: var(--color-bg);
+    --foreground: var(--color-text-primary);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --card: var(--color-surface);
+    --card-foreground: var(--color-text-primary);
 
-    --primary: 217 65% 11%;
-    --primary-foreground: 210 40% 98%;
+    --popover: var(--color-surface);
+    --popover-foreground: var(--color-text-primary);
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --primary: var(--color-primary);
+    --primary-foreground: #FFFFFF;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary: var(--color-surface-muted);
+    --secondary-foreground: var(--color-text-primary);
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
+    --muted: var(--color-surface-muted);
+    --muted-foreground: var(--color-text-muted);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --accent: var(--color-primary-soft);
+    --accent-foreground: var(--color-text-primary);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 217 65% 11%;
+    --destructive: var(--color-danger);
+    --destructive-foreground: #FFFFFF;
+
+    --border: var(--color-border);
+    --input: var(--color-border);
+    --ring: var(--color-primary);
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --color-bg: #141413;
+    --color-surface: #1E1E1C;
+    --color-surface-muted: #282825;
+    --color-text-primary: #F7F6F2;
+    --color-text-secondary: #BDBAB1;
+    --color-text-muted: #88867E;
+    --color-border: #2E2E2A;
+    --color-border-strong: #44433E;
+    --color-primary: #FFFFFF;
+    --color-primary-soft: #2A2A26;
+    --color-success: #4E9A74;
+    --color-warning: #C79234;
+    --color-danger: #C95A5D;
+    --color-info: #648BAF;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: var(--color-bg);
+    --foreground: var(--color-text-primary);
+    --card: var(--color-surface);
+    --card-foreground: var(--color-text-primary);
+    --popover: var(--color-surface);
+    --popover-foreground: var(--color-text-primary);
+    --primary: var(--color-primary);
+    --primary-foreground: #111111;
+    --secondary: var(--color-surface-muted);
+    --secondary-foreground: var(--color-text-primary);
+    --muted: var(--color-surface-muted);
+    --muted-foreground: var(--color-text-muted);
+    --accent: var(--color-primary-soft);
+    --accent-foreground: var(--color-text-primary);
+    --destructive: var(--color-danger);
+    --destructive-foreground: #FFFFFF;
+    --border: var(--color-border);
+    --input: var(--color-border);
+    --ring: var(--color-primary);
   }
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f1f5f9;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  color: var(--color-text-primary);
 }
 
-/* Crisp White-Bordered Card Aesthetic */
+/* Minimal Editorial Card & Container Aesthetic */
 .card, [class*="rounded-xl border"], [class*="rounded-2xl border"] {
-  border-width: 1.5px !important;
-  border-color: #ffffff !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.7);
+  border-color: var(--color-border) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Editorial Title Styles inspired by Minimal Design */
+.font-editorial {
+  font-family: 'Newsreader', 'Georgia', serif;
 }
 
 ::-webkit-scrollbar {
@@ -89,14 +120,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--color-border-strong);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--color-text-muted);
 }

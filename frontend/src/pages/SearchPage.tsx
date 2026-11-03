@@ -30,10 +30,10 @@ export const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Step state: 'input' -> 'interpreted' (Screen 8) -> 'results' (Screen 9)
+  // Step state: 'input' -> 'interpreted' -> 'results'
   const [stage, setStage] = useState<'input' | 'interpreted' | 'results'>('input')
 
-  // Interpretation state (Screen 8)
+  // Interpretation state
   const [interpreted, setInterpreted] = useState<InterpretedState>({
     raw_query: '',
     practice_area: 'Criminal Law',
@@ -45,7 +45,7 @@ export const SearchPage: React.FC = () => {
   })
   const [isEditingInterpretation, setIsEditingInterpretation] = useState(false)
 
-  // Results state (Screen 9)
+  // Results state
   const [result, setResult] = useState<DiscoveryResponse | null>(null)
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const SearchPage: React.FC = () => {
     }
   }, [initialQuery])
 
-  // Step 1 -> Step 2: User inputs query -> AI analyzes and shows Screen 8 (Interpretation)
+  // Step 1 -> Step 2: User inputs query -> AI analyzes
   const handleAnalyzeQuery = async (queryText?: string) => {
     const q = (queryText || query).trim()
     if (!q) return
@@ -79,14 +79,12 @@ export const SearchPage: React.FC = () => {
     setError(null)
 
     try {
-      // Call parse endpoint
       const response = await api.post('/ai/ask-network', {
         query: q,
         include_unclaimed: true,
       })
       const data = response.data
 
-      // Extract parsed params
       const parsedLoc = data.parsed_parameters?.location || (q.toLowerCase().includes('salem') ? 'Salem, Tamil Nadu' : q.toLowerCase().includes('chennai') ? 'Chennai, Tamil Nadu' : 'Tamil Nadu')
       const parsedPA = data.parsed_parameters?.practice_area || (q.toLowerCase().includes('criminal') ? 'Criminal Law' : q.toLowerCase().includes('civil') ? 'Civil Litigation' : 'General Practice')
       const parsedSvc = data.parsed_parameters?.service_required || 'Court Appearance'
@@ -101,7 +99,6 @@ export const SearchPage: React.FC = () => {
         network_preference: 'Verified professionals only',
       })
 
-      // Store candidates in memory
       const transformedCandidates: RecommendedCandidate[] = (data.recommendations || []).map((rec: any) => ({
         profile_id: rec.profile_id,
         full_name: rec.full_name,
@@ -138,7 +135,6 @@ export const SearchPage: React.FC = () => {
         search_mode: 'deterministic_grounded',
       })
 
-      // Show Screen 8 (AI Search Interpretation)
       setStage('interpreted')
     } catch (err) {
       console.error(err)
@@ -148,7 +144,6 @@ export const SearchPage: React.FC = () => {
     }
   }
 
-  // Step 2 -> Step 3: User confirms interpretation -> Screen 9 (Search Results)
   const handleConfirmSearch = () => {
     setStage('results')
   }
@@ -163,24 +158,24 @@ export const SearchPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* ──────────────── Top Search Input Bar ──────────────── */}
-      <div className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs">
+      <div className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6">
         <form
           onSubmit={(e) => {
             e.preventDefault()
             handleAnalyzeQuery()
           }}
-          className="space-y-3"
+          className="space-y-4"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#1565C0] flex items-center">
-              <Sparkles className="w-3.5 h-3.5 mr-1 text-[#1565C0]" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#171717] flex items-center">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5 text-[#111111]" />
               AI Natural Language Professional Search
             </span>
             {stage !== 'input' && (
               <button
                 type="button"
                 onClick={() => setStage('input')}
-                className="text-xs text-[#546E7A] hover:underline"
+                className="text-xs text-[#686868] hover:text-[#171717] underline"
               >
                 Reset Search
               </button>
@@ -193,12 +188,13 @@ export const SearchPage: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Describe your legal requirement in plain language..."
-              className="w-full pl-4 pr-32 py-3.5 border border-[#E0E0E0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0D47A1] text-[#212121] placeholder-[#BDBDBD]"
+              className="w-full pl-4 pr-36 py-3.5 bg-[#FFFFFF] border border-[#D9D7D0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#111111] focus:border-[#111111] text-[#171717] placeholder-[#929292]"
             />
             <Button
               type="submit"
+              variant="primary"
               disabled={loading || !query.trim()}
-              className="absolute right-2 top-2 h-9 px-5 bg-[#0D47A1] text-white hover:bg-[#0B3C8A] rounded-md font-medium text-xs flex items-center"
+              className="absolute right-2 top-2 h-9 px-5 text-xs font-semibold"
             >
               {loading ? (
                 <>
@@ -206,14 +202,14 @@ export const SearchPage: React.FC = () => {
                   Interpreting...
                 </>
               ) : (
-                '⚡ SEARCH'
+                'SEARCH'
               )}
             </Button>
           </div>
 
           {/* Sample Prompts */}
-          <div className="flex items-center flex-wrap gap-1.5 pt-1 text-xs">
-            <span className="text-[#666666] font-medium mr-1">Try asking:</span>
+          <div className="flex items-center flex-wrap gap-2 pt-1 text-xs">
+            <span className="text-[#929292] font-medium mr-1 text-[11px] uppercase tracking-wider">Try asking:</span>
             {sampleQueries.map((sample, idx) => (
               <button
                 key={idx}
@@ -222,7 +218,7 @@ export const SearchPage: React.FC = () => {
                   setQuery(sample)
                   handleAnalyzeQuery(sample)
                 }}
-                className="bg-[#FAFAFA] hover:bg-slate-100 text-[#546E7A] px-2.5 py-1 rounded border border-[#E0E0E0] transition-colors"
+                className="bg-[#F0EFEA] hover:bg-[#E8E6DF] text-[#171717] px-2.5 py-1 rounded-md border border-[#D9D7D0] transition-colors text-xs"
               >
                 &ldquo;{sample}&rdquo;
               </button>
@@ -233,111 +229,114 @@ export const SearchPage: React.FC = () => {
 
       {/* Error state */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-[#C62828] p-4 rounded-lg text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4 shrink-0 text-[#C62828]" />
+        <div className="bg-[#F0EFEA] border border-[#A63D40] text-[#A63D40] p-4 rounded-lg text-xs flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 shrink-0 text-[#A63D40]" />
           <span>{error}</span>
         </div>
       )}
 
-      {/* ──────────────── SCREEN 8: AI SEARCH INTERPRETATION ──────────────── */}
+      {/* ──────────────── AI SEARCH INTERPRETATION ──────────────── */}
       {stage === 'interpreted' && (
-        <div className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-6">
-          <div className="border-b border-[#E0E0E0] pb-4">
-            <h2 className="text-base font-bold uppercase tracking-wider text-[#212121]">
-              AI SEARCH INTERPRETATION
+        <div className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 sm:p-8 space-y-6">
+          <div className="border-b border-[#D9D7D0] pb-4">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#929292] mb-1">
+              01 · REQUIREMENT INTERPRETATION
+            </div>
+            <h2 className="text-xl sm:text-2xl font-editorial text-[#171717] font-normal tracking-tight">
+              AI Search <span className="italic font-serif">Interpretation</span>
             </h2>
-            <div className="mt-2 text-xs text-[#666666]">
-              Your requirement:
-              <p className="font-semibold text-sm text-[#212121] mt-0.5">&ldquo;{interpreted.raw_query}&rdquo;</p>
+            <div className="mt-2 text-xs text-[#686868]">
+              Interpreted from your prompt:
+              <p className="font-semibold text-sm text-[#171717] mt-1">&ldquo;{interpreted.raw_query}&rdquo;</p>
             </div>
           </div>
 
           <div className="space-y-4 text-xs">
-            <span className="font-bold text-xs uppercase tracking-wider text-[#1565C0] block">
-              AI UNDERSTOOD & MAPPED
+            <span className="font-bold text-[11px] uppercase tracking-widest text-[#929292] block">
+              Parsed Filters & Criteria
             </span>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Practice Area */}
-              <div className="p-3.5 bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg">
-                <span className="text-[#666666] block font-medium mb-1">PRACTICE AREA</span>
+              <div className="p-4 bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg">
+                <span className="text-[#929292] text-[10px] uppercase font-bold tracking-wider block mb-1">PRACTICE AREA</span>
                 {isEditingInterpretation ? (
                   <input
                     type="text"
                     value={interpreted.practice_area}
                     onChange={(e) => setInterpreted({ ...interpreted, practice_area: e.target.value })}
-                    className="w-full p-1.5 border border-slate-300 rounded text-xs"
+                    className="w-full p-1.5 border border-[#D9D7D0] rounded text-xs bg-[#FFFFFF] text-[#171717]"
                   />
                 ) : (
-                  <div className="flex items-center text-sm font-bold text-[#212121]">
-                    <Check className="w-4 h-4 text-[#2E7D32] mr-1.5" />
+                  <div className="flex items-center text-sm font-bold text-[#171717]">
+                    <Check className="w-4 h-4 text-[#2F6B4F] mr-1.5" />
                     {interpreted.practice_area}
                   </div>
                 )}
               </div>
 
               {/* Location */}
-              <div className="p-3.5 bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg">
-                <span className="text-[#666666] block font-medium mb-1">LOCATION</span>
+              <div className="p-4 bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg">
+                <span className="text-[#929292] text-[10px] uppercase font-bold tracking-wider block mb-1">LOCATION</span>
                 {isEditingInterpretation ? (
                   <input
                     type="text"
                     value={interpreted.location}
                     onChange={(e) => setInterpreted({ ...interpreted, location: e.target.value })}
-                    className="w-full p-1.5 border border-slate-300 rounded text-xs"
+                    className="w-full p-1.5 border border-[#D9D7D0] rounded text-xs bg-[#FFFFFF] text-[#171717]"
                   />
                 ) : (
-                  <div className="flex items-center text-sm font-bold text-[#212121]">
-                    <Check className="w-4 h-4 text-[#2E7D32] mr-1.5" />
+                  <div className="flex items-center text-sm font-bold text-[#171717]">
+                    <Check className="w-4 h-4 text-[#2F6B4F] mr-1.5" />
                     {interpreted.location}
                   </div>
                 )}
               </div>
 
               {/* Additional Expertise */}
-              <div className="p-3.5 bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg">
-                <span className="text-[#666666] block font-medium mb-1">ADDITIONAL EXPERTISE</span>
-                <div className="flex items-center text-sm font-bold text-[#212121]">
-                  <Check className="w-4 h-4 text-[#2E7D32] mr-1.5" />
+              <div className="p-4 bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg">
+                <span className="text-[#929292] text-[10px] uppercase font-bold tracking-wider block mb-1">ADDITIONAL EXPERTISE</span>
+                <div className="flex items-center text-sm font-bold text-[#171717]">
+                  <Check className="w-4 h-4 text-[#2F6B4F] mr-1.5" />
                   {interpreted.additional_expertise}
                 </div>
-                <span className="text-[11px] text-[#546E7A] block mt-1">○ High Court Specialization (inferred)</span>
+                <span className="text-[11px] text-[#686868] block mt-1">○ High Court Specialization (inferred)</span>
               </div>
 
               {/* Service Type */}
-              <div className="p-3.5 bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg">
-                <span className="text-[#666666] block font-medium mb-1">SERVICE TYPE</span>
-                <div className="flex items-center text-sm font-bold text-[#212121]">
-                  <Check className="w-4 h-4 text-[#2E7D32] mr-1.5" />
+              <div className="p-4 bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg">
+                <span className="text-[#929292] text-[10px] uppercase font-bold tracking-wider block mb-1">SERVICE TYPE</span>
+                <div className="flex items-center text-sm font-bold text-[#171717]">
+                  <Check className="w-4 h-4 text-[#2F6B4F] mr-1.5" />
                   {interpreted.service_type}
                 </div>
-                <span className="text-[11px] text-[#546E7A] block mt-1">○ Legal Consulting & Drafting (optional)</span>
+                <span className="text-[11px] text-[#686868] block mt-1">○ Legal Consulting & Drafting (optional)</span>
               </div>
             </div>
 
             {/* Experience & Network Preferences */}
-            <div className="p-3.5 bg-[#FAFAFA] border border-[#E0E0E0] rounded-lg space-y-2">
-              <span className="text-[#666666] block font-medium">NETWORK PREFERENCE</span>
-              <div className="flex flex-wrap gap-4 text-xs text-[#212121]">
-                <label className="flex items-center space-x-1.5 cursor-pointer">
-                  <input type="checkbox" defaultChecked readOnly className="rounded text-[#0D47A1]" />
+            <div className="p-4 bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg space-y-2">
+              <span className="text-[#929292] text-[10px] uppercase font-bold tracking-wider block">NETWORK PREFERENCE</span>
+              <div className="flex flex-wrap gap-4 text-xs text-[#171717]">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" defaultChecked readOnly className="rounded text-[#111111] focus:ring-0" />
                   <span>Verified Bar Council professionals only</span>
                 </label>
-                <label className="flex items-center space-x-1.5 cursor-pointer">
-                  <input type="checkbox" defaultChecked readOnly className="rounded text-[#0D47A1]" />
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" defaultChecked readOnly className="rounded text-[#111111] focus:ring-0" />
                   <span>Minimum 5+ years verified experience</span>
                 </label>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#E0E0E0] flex items-center justify-between">
+          <div className="pt-4 border-t border-[#D9D7D0] flex items-center justify-between">
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
               size="sm"
               onClick={() => setIsEditingInterpretation(!isEditingInterpretation)}
-              className="border-[#546E7A] text-[#546E7A] hover:bg-slate-50"
+              className="text-xs"
             >
               <Edit2 className="w-3.5 h-3.5 mr-1.5" />
               {isEditingInterpretation ? 'Save Edits' : 'Edit Filters'}
@@ -345,39 +344,43 @@ export const SearchPage: React.FC = () => {
 
             <Button
               type="button"
+              variant="primary"
               size="sm"
               onClick={handleConfirmSearch}
-              className="bg-[#0D47A1] text-white hover:bg-[#0B3C8A] px-6 py-2"
+              className="px-6 py-2 text-xs font-semibold"
             >
-              [ ✓ SEARCH NOW ]
+              Confirm & View Results
             </Button>
           </div>
         </div>
       )}
 
-      {/* ──────────────── SCREEN 9: AI SEARCH RESULTS ──────────────── */}
+      {/* ──────────────── AI SEARCH RESULTS ──────────────── */}
       {stage === 'results' && result && (
         <div className="space-y-6">
           {/* Header Summary */}
-          <div className="bg-white rounded-xl border border-[#E0E0E0] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
-                SEARCH RESULTS
+              <div className="text-[10px] uppercase font-bold tracking-widest text-[#929292] mb-0.5">
+                02 · MATCH RESULTS
+              </div>
+              <h2 className="text-base font-editorial text-[#171717] font-normal">
+                Search results for <span className="italic font-serif">{interpreted.practice_area}</span> in <span className="italic font-serif">{interpreted.location}</span>
               </h2>
-              <p className="text-[#666666] mt-0.5">
-                Your search: <b>{interpreted.practice_area}</b> • <b>{interpreted.location}</b> • <b>{interpreted.additional_expertise}</b>
+              <p className="text-[#686868] mt-0.5">
+                Filters: <b>{interpreted.additional_expertise}</b> • <b>{interpreted.service_type}</b>
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <span className="font-semibold text-sm text-[#0D47A1]">
-                Matches found: {result.total_matches}
+              <span className="font-semibold text-xs text-[#171717] bg-[#F0EFEA] border border-[#D9D7D0] px-2.5 py-1 rounded-md">
+                Matches: {result.total_matches}
               </span>
               <Button
                 type="button"
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={() => setStage('interpreted')}
-                className="h-7 text-xs border-[#E0E0E0] text-[#546E7A]"
+                className="h-7 text-xs"
               >
                 Refine Search
               </Button>
@@ -392,7 +395,7 @@ export const SearchPage: React.FC = () => {
           </div>
 
           {result.candidates.length === 0 && (
-            <div className="text-center py-12 bg-white rounded-xl border border-[#E0E0E0] text-sm text-[#666666]">
+            <div className="text-center py-12 bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] text-sm text-[#686868]">
               No advocates found for this specific jurisdiction. Try broadening your location criteria.
             </div>
           )}

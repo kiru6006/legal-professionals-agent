@@ -8,44 +8,81 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        // Direct Global Design Tokens
+        bg: "var(--color-bg)",
+        surface: {
+          DEFAULT: "var(--color-surface)",
+          muted: "var(--color-surface-muted)",
+        },
+        border: {
+          DEFAULT: "var(--color-border)",
+          strong: "var(--color-border-strong)",
+        },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--color-primary)",
+          soft: "var(--color-primary-soft)",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--color-surface-muted)",
+          foreground: "var(--color-text-primary)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--color-surface-muted)",
+          foreground: "var(--color-text-muted)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--color-primary-soft)",
+          foreground: "var(--color-text-primary)",
+        },
+        success: {
+          DEFAULT: "var(--color-success)",
+          soft: "#EAF2ED",
+        },
+        warning: {
+          DEFAULT: "var(--color-warning)",
+          soft: "#F8F3EA",
+        },
+        danger: {
+          DEFAULT: "var(--color-danger)",
+          soft: "#FAEDEE",
+        },
+        info: {
+          DEFAULT: "var(--color-info)",
+          soft: "#EDF2F7",
+        },
+        // Typography color tokens
+        "text-primary": "var(--color-text-primary)",
+        "text-secondary": "var(--color-text-secondary)",
+        "text-muted": "var(--color-text-muted)",
+        // Shadcn tokens mapped into the design token system
+        background: "var(--color-bg)",
+        foreground: "var(--color-text-primary)",
+        card: {
+          DEFAULT: "var(--color-surface)",
+          foreground: "var(--color-text-primary)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--color-surface)",
+          foreground: "var(--color-text-primary)",
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        input: "var(--color-border)",
+        ring: "var(--color-primary)",
+        destructive: {
+          DEFAULT: "var(--color-danger)",
+          foreground: "#FFFFFF",
         },
+        // Legacy navy tokens mapped to dark neutral
         navy: {
-          900: "#0A192F",
-          800: "#112240",
-          700: "#1E3A8A",
+          900: "var(--color-primary)",
+          800: "#222222",
+          700: "#333333",
         }
+      },
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        editorial: ['Newsreader', 'Georgia', 'serif'],
+        heading: ['Outfit', 'Inter', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

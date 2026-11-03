@@ -66,11 +66,14 @@ export const CommunityPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Title */}
-      <div className="border-b border-[#E0E0E0] pb-4">
-        <h1 className="text-xl font-bold uppercase tracking-wider text-[#212121]">
-          PROFESSIONAL COMMUNITY
+      <div className="border-b border-[#D9D7D0] pb-6">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
+          01 · KNOWLEDGE EXCHANGE
+        </div>
+        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
+          Professional <span className="italic font-serif">Community</span>
         </h1>
-        <p className="text-xs text-[#666666] mt-0.5">
+        <p className="text-xs text-[#686868] mt-1">
           Peer-to-peer practice area forums, trial case law discussions, and practical knowledge sharing.
         </p>
       </div>
@@ -82,72 +85,78 @@ export const CommunityPage: React.FC = () => {
             key={pa}
             type="button"
             onClick={() => setActiveArea(pa)}
-            className={`px-3 py-1.5 rounded-md border font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg border font-medium transition-colors ${
               activeArea === pa
-                ? 'bg-[#0D47A1] text-white border-[#0D47A1]'
-                : 'bg-white text-[#546E7A] border-[#E0E0E0] hover:bg-slate-50'
+                ? 'bg-[#111111] text-white border-[#111111]'
+                : 'bg-[#FFFFFF] text-[#686868] border-[#D9D7D0] hover:bg-[#E8E6DF] hover:text-[#171717]'
             }`}
           >
-            [ {pa} ]
+            {pa}
           </button>
         ))}
       </div>
 
       {/* FEATURED DISCUSSIONS */}
-      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-4">
+      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
-            FEATURED DISCUSSIONS
-          </h2>
-          <span className="text-xs text-[#666666]">Permanent Knowledge Threads</span>
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+              ACTIVE TOPICS
+            </div>
+            <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
+              Featured Discussions
+            </h2>
+          </div>
+          <span className="text-xs text-[#929292]">Permanent Knowledge Threads</span>
         </div>
 
         <div className="space-y-4">
           {discussions.map((d) => (
             <div
               key={d.id}
-              className="border border-[#E0E0E0] rounded-lg p-5 bg-[#FAFAFA] space-y-3"
+              className="border border-[#D9D7D0] rounded-lg p-5 bg-[#FFFFFF] hover:border-[#BDBAB1] transition-colors space-y-3"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-semibold text-[#0D47A1] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#171717] bg-[#F0EFEA] px-2 py-0.5 rounded border border-[#D9D7D0]">
                       {d.practiceArea}
                     </span>
-                    <h3 className="text-sm font-bold text-[#212121]">{d.title}</h3>
+                    <h3 className="text-sm font-bold text-[#171717]">{d.title}</h3>
                   </div>
-                  <p className="text-xs text-[#666666] mt-1">
-                    Started by <b>{d.author}</b> • {d.participants} professionals participating • {d.messagesCount} messages • Last active {d.lastUpdated}
+                  <p className="text-xs text-[#686868] mt-1.5">
+                    Started by <b className="text-[#171717]">{d.author}</b> • {d.participants} professionals participating • {d.messagesCount} messages • Last active {d.lastUpdated}
                   </p>
                 </div>
 
                 <div className="flex items-center space-x-2 shrink-0">
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     onClick={() => setShowSummaryModal(true)}
-                    className="h-8 text-xs border-[#1565C0] text-[#1565C0] bg-white hover:bg-blue-50"
+                    className="h-8 text-xs"
                   >
-                    <Sparkles className="w-3.5 h-3.5 mr-1" />
-                    ⚡ AI Summary
+                    <Sparkles className="w-3.5 h-3.5 mr-1 text-[#111111]" />
+                    AI Summary
                   </Button>
                   <Button
                     type="button"
+                    variant="primary"
                     size="sm"
-                    className="h-8 text-xs bg-[#0D47A1] text-white hover:bg-[#0B3C8A]"
+                    className="h-8 text-xs font-semibold"
                   >
-                    [ JOIN DISCUSSION ]
+                    Join Discussion
                   </Button>
                 </div>
               </div>
 
               {/* Key points preview */}
-              <div className="bg-white p-3 rounded-md border border-[#E0E0E0] text-xs text-[#546E7A] space-y-1">
-                <span className="font-semibold text-[#212121] block">Key Discussion Points:</span>
+              <div className="bg-[#F0EFEA] p-3.5 rounded-lg border border-[#D9D7D0] text-xs text-[#686868] space-y-1">
+                <span className="font-bold text-[#111111] block mb-1">Key Discussion Points:</span>
                 {d.keyPoints.map((pt, pIdx) => (
                   <p key={pIdx} className="flex items-start">
-                    <span className="text-[#0D47A1] mr-1.5">•</span>
+                    <span className="text-[#111111] mr-2">•</span>
                     {pt}
                   </p>
                 ))}
@@ -157,40 +166,40 @@ export const CommunityPage: React.FC = () => {
         </div>
       </section>
 
-      {/* SCREEN 16: COMMUNITY AI SUMMARY MODAL */}
+      {/* COMMUNITY AI SUMMARY MODAL */}
       {showSummaryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-xl border border-[#E0E0E0] overflow-hidden text-xs">
-            <div className="p-4 border-b border-[#E0E0E0] bg-[#FAFAFA] flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 animate-in fade-in duration-200">
+          <div className="bg-[#FFFFFF] rounded-xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-lg border border-[#D9D7D0] overflow-hidden text-xs">
+            <div className="p-4 border-b border-[#D9D7D0] bg-[#F0EFEA] flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-[#212121]">
-                  DISCUSSION SUMMARY: Electronic Evidence
+                <h3 className="text-sm font-bold text-[#171717]">
+                  Discussion Summary: Electronic Evidence
                 </h3>
-                <span className="text-[11px] text-[#666666]">
+                <span className="text-[11px] text-[#929292]">
                   34 professionals • 147 messages • Section 65B IT Act
                 </span>
               </div>
               <button
                 onClick={() => setShowSummaryModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold"
+                className="text-[#686868] hover:text-[#171717] text-sm font-bold p-1 rounded hover:bg-[#E8E6DF]"
               >
                 ✕
               </button>
             </div>
 
             <div className="p-5 overflow-y-auto space-y-4">
-              <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg text-[11px] flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-amber-700 mt-0.5" />
+              <div className="p-3 bg-[#F0EFEA] border border-[#D9D7D0] text-[#9A6A16] rounded-lg text-[11px] flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 text-[#9A6A16] mt-0.5" />
                 <span>
                   <b>Statutory Disclaimer:</b> This summary is AI-generated for review efficiency only. Always independently verify active case citations and jurisdictional rulings.
                 </span>
               </div>
 
               <div>
-                <span className="font-bold text-[#0D47A1] uppercase tracking-wider block mb-1">
+                <span className="font-bold text-[#111111] text-[10px] uppercase tracking-wider block mb-1">
                   KEY CONSENSUS OBSERVATIONS
                 </span>
-                <ul className="space-y-1.5 text-[#546E7A] pl-1">
+                <ul className="space-y-1.5 text-[#686868] pl-1">
                   <li>1. Digital forensics reports face heavy trial scrutiny regarding chain of custody and hash value preservation in police filings.</li>
                   <li>2. Secondary electronic evidence requires strict compliance with certificate procedures under Supreme Court precedent.</li>
                   <li>3. Practical challenge: Defense advocates in district headquarters face delays obtaining forensic laboratory inspection orders.</li>
@@ -198,22 +207,22 @@ export const CommunityPage: React.FC = () => {
               </div>
 
               <div>
-                <span className="font-bold text-[#0D47A1] uppercase tracking-wider block mb-1">
+                <span className="font-bold text-[#111111] text-[10px] uppercase tracking-wider block mb-1">
                   DIFFERING VIEWPOINTS
                 </span>
-                <p className="text-[#546E7A] leading-relaxed">
-                  <b>View A (Majority):</b> Strict certificate condition precedent applies at stage of evidence tendering.<br />
-                  <b>View B (Minority):</b> Procedural defect can be cured by recalling witness prior to defense argument.
+                <p className="text-[#686868] leading-relaxed">
+                  <b className="text-[#171717]">View A (Majority):</b> Strict certificate condition precedent applies at stage of evidence tendering.<br />
+                  <b className="text-[#171717]">View B (Minority):</b> Procedural defect can be cured by recalling witness prior to defense argument.
                 </p>
               </div>
             </div>
 
-            <div className="p-3.5 border-t border-[#E0E0E0] bg-[#FAFAFA] flex justify-end">
+            <div className="p-3.5 border-t border-[#D9D7D0] bg-[#F0EFEA] flex justify-end">
               <Button
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={() => setShowSummaryModal(false)}
-                className="h-8 text-xs border-[#E0E0E0]"
+                className="h-8 text-xs"
               >
                 Close Summary
               </Button>

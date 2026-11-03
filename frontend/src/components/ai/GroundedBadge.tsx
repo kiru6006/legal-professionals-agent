@@ -10,21 +10,21 @@ interface GroundedBadgeProps {
 
 export const GroundedBadge: React.FC<GroundedBadgeProps> = ({ tier, score, className }) => {
   const styles = {
-    HIGH: 'bg-emerald-50 text-emerald-800 border-emerald-300',
-    MEDIUM: 'bg-amber-50 text-amber-800 border-amber-300',
-    LOW: 'bg-slate-50 text-slate-700 border-slate-300',
+    HIGH: 'bg-[#F0EFEA] text-[#2F6B4F] border-[#D9D7D0]',
+    MEDIUM: 'bg-[#F0EFEA] text-[#9A6A16] border-[#D9D7D0]',
+    LOW: 'bg-[#F0EFEA] text-[#929292] border-[#D9D7D0]',
   }
 
   const icons = {
-    HIGH: <CheckCircle className="w-3.5 h-3.5 text-emerald-600 mr-1" />,
-    MEDIUM: <AlertTriangle className="w-3.5 h-3.5 text-amber-600 mr-1" />,
-    LOW: <HelpCircle className="w-3.5 h-3.5 text-slate-500 mr-1" />,
+    HIGH: <CheckCircle className="w-3.5 h-3.5 text-[#2F6B4F] mr-1.5" />,
+    MEDIUM: <AlertTriangle className="w-3.5 h-3.5 text-[#9A6A16] mr-1.5" />,
+    LOW: <HelpCircle className="w-3.5 h-3.5 text-[#929292] mr-1.5" />,
   }
 
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border',
         styles[tier],
         className
       )}

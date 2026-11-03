@@ -27,25 +27,30 @@ Available for local appearances, filing caveat petitions, and preparing legal op
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">AI-Assisted Profile Setup</h1>
-        <p className="text-sm text-slate-500">
+    <div className="space-y-8 max-w-6xl mx-auto">
+      <div className="border-b border-[#D9D7D0] pb-6">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
+          01 · ASSISTED EXTRACTION
+        </div>
+        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
+          AI-Assisted <span className="italic font-serif">Profile Setup</span>
+        </h1>
+        <p className="text-xs text-[#686868] mt-1">
           Paste your professional resume, bio, or summary. Our AI extracts structured practice areas, courts, and services for your review.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column: Input */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+        <div className="bg-[#FFFFFF] border border-[#D9D7D0] rounded-xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-semibold text-slate-800 flex items-center">
-              <FileText className="w-4 h-4 mr-2 text-sky-500" />
-              Raw Bio or Professional Profile Text
+            <label className="text-xs font-bold text-[#171717] flex items-center">
+              <FileText className="w-4 h-4 mr-2 text-[#111111]" />
+              Bio or Professional Profile Text
             </label>
             <button
               onClick={() => setBioText(sampleBio)}
-              className="text-xs text-sky-600 hover:text-sky-700 font-medium"
+              className="text-xs text-[#171717] hover:underline font-semibold"
             >
               Load Sample Bio
             </button>
@@ -56,13 +61,14 @@ Available for local appearances, filing caveat petitions, and preparing legal op
             value={bioText}
             onChange={(e) => setBioText(e.target.value)}
             placeholder="Paste your CV, bio, or list of practice areas and courts here..."
-            className="w-full p-4 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800"
+            className="w-full p-4 border border-[#D9D7D0] rounded-lg text-xs bg-[#FFFFFF] focus:outline-none focus:ring-1 focus:ring-[#111111] text-[#171717] placeholder-[#929292]"
           />
 
           <Button
             onClick={handleExtract}
+            variant="primary"
             disabled={loading || !bioText.trim()}
-            className="w-full bg-navy-900 text-white hover:bg-navy-800 flex items-center justify-center py-3"
+            className="w-full flex items-center justify-center py-3 text-xs font-semibold"
           >
             {loading ? (
               <>
@@ -71,7 +77,7 @@ Available for local appearances, filing caveat petitions, and preparing legal op
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 mr-2 text-sky-400" />
+                <Sparkles className="w-4 h-4 mr-2" />
                 Extract Profile Details via AI
               </>
             )}
@@ -79,24 +85,26 @@ Available for local appearances, filing caveat petitions, and preparing legal op
         </div>
 
         {/* Right Column: Interactive Approval */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+        <div className="bg-[#FFFFFF] border border-[#D9D7D0] rounded-xl p-6 shadow-xs flex flex-col justify-between">
           <div className="space-y-6">
-            <h2 className="text-sm font-semibold text-slate-800 flex items-center border-b pb-3">
-              <CheckCircle className="w-4 h-4 mr-2 text-emerald-600" />
-              Structured Details for Verification & Approval
-            </h2>
+            <div className="border-b border-[#D9D7D0] pb-3">
+              <h2 className="text-xs font-bold text-[#171717] flex items-center">
+                <CheckCircle className="w-4 h-4 mr-2 text-[#2F6B4F]" />
+                Structured Details for Verification & Approval
+              </h2>
+            </div>
 
             {extractedData ? (
-              <div className="space-y-4 text-sm">
+              <div className="space-y-4 text-xs">
                 <div>
-                  <span className="font-semibold text-xs text-slate-500 uppercase tracking-wider block mb-1">
+                  <span className="font-bold text-[10px] text-[#929292] uppercase tracking-wider block mb-2">
                     Detected Practice Areas:
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {extractedData.practice_areas?.map((item: string, idx: number) => (
                       <span
                         key={idx}
-                        className="bg-blue-50 text-blue-800 border border-blue-200 text-xs px-2.5 py-1 rounded-md font-medium"
+                        className="bg-[#F0EFEA] text-[#171717] border border-[#D9D7D0] text-xs px-2.5 py-1 rounded-md font-medium"
                       >
                         ✓ {item}
                       </span>
@@ -105,14 +113,14 @@ Available for local appearances, filing caveat petitions, and preparing legal op
                 </div>
 
                 <div>
-                  <span className="font-semibold text-xs text-slate-500 uppercase tracking-wider block mb-1">
+                  <span className="font-bold text-[10px] text-[#929292] uppercase tracking-wider block mb-2">
                     Detected Courts:
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {extractedData.court_names?.map((item: string, idx: number) => (
                       <span
                         key={idx}
-                        className="bg-purple-50 text-purple-800 border border-purple-200 text-xs px-2.5 py-1 rounded-md font-medium"
+                        className="bg-[#F0EFEA] text-[#686868] border border-[#D9D7D0] text-xs px-2.5 py-1 rounded-md font-medium"
                       >
                         ✓ {item}
                       </span>
@@ -121,14 +129,14 @@ Available for local appearances, filing caveat petitions, and preparing legal op
                 </div>
 
                 <div>
-                  <span className="font-semibold text-xs text-slate-500 uppercase tracking-wider block mb-1">
+                  <span className="font-bold text-[10px] text-[#929292] uppercase tracking-wider block mb-2">
                     Offered Services:
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {extractedData.service_names?.map((item: string, idx: number) => (
                       <span
                         key={idx}
-                        className="bg-slate-100 text-slate-800 border border-slate-200 text-xs px-2.5 py-1 rounded-md font-medium"
+                        className="bg-[#F0EFEA] text-[#171717] border border-[#D9D7D0] text-xs px-2.5 py-1 rounded-md font-medium"
                       >
                         ✓ {item}
                       </span>
@@ -138,30 +146,30 @@ Available for local appearances, filing caveat petitions, and preparing legal op
 
                 {extractedData.years_of_experience && (
                   <div>
-                    <span className="font-semibold text-xs text-slate-500 uppercase tracking-wider block mb-1">
+                    <span className="font-bold text-[10px] text-[#929292] uppercase tracking-wider block mb-1">
                       Experience:
                     </span>
-                    <span className="text-slate-800 font-medium">{extractedData.years_of_experience} Years</span>
+                    <span className="text-[#171717] font-semibold">{extractedData.years_of_experience} Years</span>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="h-48 flex items-center justify-center text-center text-slate-400 text-sm">
+              <div className="h-48 flex items-center justify-center text-center text-[#929292] text-xs">
                 Extract details to preview and approve before saving to your profile.
               </div>
             )}
           </div>
 
           {extractedData && (
-            <div className="pt-6 border-t mt-6">
+            <div className="pt-6 border-t border-[#D9D7D0] mt-6">
               {saved ? (
-                <div className="bg-emerald-50 text-emerald-800 p-3 rounded-xl text-center text-sm font-medium">
+                <div className="bg-[#F0EFEA] text-[#2F6B4F] border border-[#D9D7D0] p-3 rounded-lg text-center text-xs font-semibold">
                   ✓ Profile successfully updated!
                 </div>
               ) : (
                 <Button
                   onClick={() => setSaved(true)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center"
+                  className="w-full bg-[#2F6B4F] hover:bg-[#25573F] text-white flex items-center justify-center text-xs font-semibold"
                 >
                   Confirm and Publish Profile
                   <ArrowRight className="w-4 h-4 ml-2" />

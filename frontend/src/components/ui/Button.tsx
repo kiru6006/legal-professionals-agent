@@ -13,14 +13,19 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-lg'
+  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] disabled:opacity-50 disabled:pointer-events-none rounded-lg'
   
   const variants = {
-    primary: 'bg-navy-900 text-white hover:bg-navy-800 focus-visible:ring-navy-900 shadow-sm',
-    secondary: 'bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-400',
-    outline: 'border border-slate-300 bg-transparent hover:bg-slate-50 text-slate-800',
-    ghost: 'hover:bg-slate-100 text-slate-700',
-    destructive: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600',
+    // Primary: #111111 with white text, hover #222222
+    primary: 'bg-[#111111] text-white hover:bg-[#222222] shadow-xs',
+    // Secondary: White background with #D9D7D0 border, #171717 text, hover #E8E6DF
+    secondary: 'bg-[#FFFFFF] border border-[#D9D7D0] text-[#171717] hover:bg-[#E8E6DF] shadow-xs',
+    // Outline: Transparent/White with #D9D7D0 border, #171717 text, hover #E8E6DF
+    outline: 'border border-[#D9D7D0] bg-[#FFFFFF] hover:bg-[#E8E6DF] text-[#171717]',
+    // Ghost: Transparent with #171717 text, hover #E8E6DF
+    ghost: 'hover:bg-[#E8E6DF] text-[#171717]',
+    // Destructive: #A63D40 with white text
+    destructive: 'bg-[#A63D40] text-white hover:bg-[#8F3437]',
   }
 
   const sizes = {

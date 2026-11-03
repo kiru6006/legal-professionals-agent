@@ -1,98 +1,73 @@
 import React, { useState } from 'react'
-import {
-  MapPin,
-  ShieldCheck
-} from 'lucide-react'
-import { Button } from '@/components/ui/Button'
 import { Link } from 'react-router-dom'
-
-interface ConnectionItem {
-  id: string
-  name: string
-  role: string
-  practice: string
-  location: string
-  experience: string
-  initial: string
-  verified: boolean
-}
+import { ShieldCheck, MapPin } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
 export const NetworkPage: React.FC = () => {
-  const [connections, setConnections] = useState<ConnectionItem[]>([
+  const [connections, setConnections] = useState([
     {
-      id: 'c1',
-      name: 'Adv. Ramesh Kumar',
-      role: 'Senior Advocate',
-      practice: 'Corporate Law • Commercial Litigation',
-      location: 'Chennai, Tamil Nadu',
-      experience: '16 yrs exp',
-      initial: 'R',
+      id: '1',
+      name: 'Adv. Kirubakaran',
+      role: 'Senior Advocate (You)',
+      practice: 'Civil Litigation • Property Law',
+      location: 'Salem, Tamil Nadu',
+      experience: '18 years',
       verified: true,
+      initial: 'K',
     },
     {
-      id: 'c2',
-      name: 'Adv. Priya Sharma',
+      id: '2',
+      name: 'Adv. M. Senthil Nathan',
       role: 'Advocate',
-      practice: 'Family Law • Civil Revision',
-      location: 'Bangalore / Coimbatore',
-      experience: '11 yrs exp',
-      initial: 'P',
+      practice: 'Criminal Defense • Bail Matters',
+      location: 'Salem, Tamil Nadu',
+      experience: '12 years',
       verified: true,
-    },
-    {
-      id: 'c3',
-      name: 'Adv. Anand Reddy',
-      role: 'Advocate',
-      practice: 'Intellectual Property • Cyber Law',
-      location: 'Chennai / Hyderabad',
-      experience: '9 yrs exp',
-      initial: 'A',
-      verified: true,
-    },
-    {
-      id: 'c4',
-      name: 'Adv. Sunita Mishra',
-      role: 'Advocate',
-      practice: 'Labour Law • Industrial Tribunals',
-      location: 'Madurai, Tamil Nadu',
-      experience: '13 yrs exp',
       initial: 'S',
+    },
+    {
+      id: '3',
+      name: 'Adv. Anitha Rajan',
+      role: 'Appellate Counsel',
+      practice: 'Constitutional Law • Writ Petitions',
+      location: 'Chennai (Madras High Court)',
+      experience: '14 years',
       verified: true,
+      initial: 'A',
+    },
+    {
+      id: '4',
+      name: 'Adv. Rajesh Kannan',
+      role: 'Advocate',
+      practice: 'Motor Accident Claims • Insurance',
+      location: 'Madurai, Tamil Nadu',
+      experience: '9 years',
+      verified: true,
+      initial: 'R',
     },
   ])
 
   const suggested = [
     {
-      name: 'Adv. Vikram Patel',
-      practice: 'Criminal & Constitutional Law',
-      location: 'Salem / Chennai',
+      name: 'Adv. K. Balasubramanian',
+      practice: 'Commercial Arbitration • Corporate',
+      location: 'Coimbatore, Tamil Nadu',
       reasons: [
-        'Same Bar Association (Tamil Nadu Bar Council)',
-        '3 mutual connections (Adv. Ramesh, Adv. Sunita)',
-        'Shared court appearances in Madras High Court',
+        'Shared practice area focus with 2 mutual colleagues in Salem Bar',
+        'Regular appearances before Principal District Court',
+        'Verified Tamil Nadu Bar Council Member (TN/2012/8765)',
       ],
-      initial: 'V',
+      initial: 'B',
     },
     {
-      name: 'Adv. Deepa Khosla',
-      practice: 'Commercial Law & Arbitration',
-      location: 'Coimbatore',
+      name: 'Adv. Deepa Sundaram',
+      practice: 'Family Law • Domestic Relations',
+      location: 'Tiruchirappalli, Tamil Nadu',
       reasons: [
-        'Complementary practice area (arbitration)',
-        'Active advocate in Coimbatore District Court',
-        'Direct peer referral network overlap',
+        'Frequent co-counsel in appellate references from Trichy to High Court',
+        '10+ years verified experience with complete profile',
       ],
       initial: 'D',
-    },
-    {
-      name: 'Adv. Harsh Mittal',
-      practice: 'Tax Law & Corporate Restructuring',
-      location: 'Chennai',
-      reasons: [
-        'Bar Association overlap',
-        'Emerging expertise area in your referral network',
-      ],
-      initial: 'H',
     },
   ]
 
@@ -103,70 +78,83 @@ export const NetworkPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Title Header */}
-      <div className="border-b border-[#E0E0E0] pb-4">
-        <h1 className="text-xl font-bold uppercase tracking-wider text-[#212121]">
-          MY PROFESSIONAL NETWORK
+      <div className="border-b border-[#D9D7D0] pb-6">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
+          01 · COLLEAGUE DIRECTORY
+        </div>
+        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
+          My Professional <span className="italic font-serif">Network</span>
         </h1>
-        <p className="text-xs text-[#666666] mt-0.5">
+        <p className="text-xs text-[#686868] mt-1">
           Manage your verified professional peers, mutual connections, and referral colleagues.
         </p>
       </div>
 
       {/* MY CONNECTIONS */}
-      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-4">
+      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
-            MY CONNECTIONS: {connections.length}
-          </h2>
-          <span className="text-xs text-[#546E7A]">Direct Colleague Graph</span>
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+              GRAPH OVERVIEW
+            </div>
+            <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
+              Active Connections ({connections.length})
+            </h2>
+          </div>
+          <span className="text-xs text-[#686868] font-medium">Direct Colleague Graph</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {connections.map((c) => (
             <div
               key={c.id}
-              className="border border-[#E0E0E0] rounded-lg p-4 bg-[#FAFAFA] flex items-start justify-between gap-3"
+              className="border border-[#D9D7D0] rounded-lg p-4 bg-[#FFFFFF] hover:border-[#BDBAB1] transition-colors flex items-start justify-between gap-3"
             >
               <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 rounded-full bg-white border border-[#E0E0E0] flex items-center justify-center font-bold text-xs text-[#0D47A1] shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#F0EFEA] border border-[#D9D7D0] flex items-center justify-center font-bold text-xs text-[#171717] shrink-0">
                   {c.initial}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#212121] flex items-center gap-1.5">
+                  <h3 className="text-sm font-bold text-[#171717] flex items-center gap-1.5">
                     {c.name}
                     {c.verified && (
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#2E7D32]" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#2F6B4F]" />
                     )}
                   </h3>
-                  <p className="text-xs text-[#546E7A] font-medium">{c.role}</p>
-                  <p className="text-xs text-[#212121] mt-1">{c.practice}</p>
-                  <p className="text-[11px] text-[#666666] flex items-center mt-1">
-                    <MapPin className="w-3 h-3 mr-1 text-slate-400" />
+                  <p className="text-xs text-[#686868] font-medium">{c.role}</p>
+                  <p className="text-xs text-[#171717] mt-1 font-semibold">{c.practice}</p>
+                  <p className="text-[11px] text-[#929292] flex items-center mt-1">
+                    <MapPin className="w-3 h-3 mr-1 text-[#929292]" />
                     {c.location} • {c.experience}
                   </p>
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => handleUnconnect(c.id)}
-                className="text-[11px] text-[#546E7A] hover:text-[#C62828] border border-[#E0E0E0] bg-white px-2 py-1 rounded transition-colors shrink-0"
-              >
-                [ UNCONNECT ]
-              </button>
+              {c.id !== '1' && (
+                <button
+                  type="button"
+                  onClick={() => handleUnconnect(c.id)}
+                  className="text-[11px] text-[#A63D40] hover:bg-[#F0EFEA] border border-[#D9D7D0] bg-[#FFFFFF] px-2 py-1 rounded transition-colors shrink-0 font-medium"
+                >
+                  Unconnect
+                </button>
+              )}
             </div>
           ))}
         </div>
       </section>
 
       {/* SUGGESTED PROFESSIONALS (AI-RECOMMENDED) */}
-      <section className="bg-white rounded-xl border border-[#E0E0E0] p-6 shadow-xs space-y-4">
+      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#212121]">
-            SUGGESTED PROFESSIONALS (AI-RECOMMENDED)
+          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+            02 · RECOMMENDATIONS
+          </div>
+          <h2 className="text-xl font-editorial text-[#171717] font-normal tracking-tight">
+            Suggested <span className="italic font-serif">Professionals</span>
           </h2>
-          <p className="text-xs text-[#666666]">
-            Every suggestion includes transparent reasoning based on Bar records and court jurisdiction:
+          <p className="text-xs text-[#686868] mt-0.5">
+            Transparent reasoning based on Bar records and court jurisdiction overlap:
           </p>
         </div>
 
@@ -174,25 +162,25 @@ export const NetworkPage: React.FC = () => {
           {suggested.map((s, idx) => (
             <div
               key={idx}
-              className="border border-[#E0E0E0] rounded-lg p-4 bg-[#FAFAFA] flex flex-col md:flex-row md:items-center justify-between gap-4"
+              className="border border-[#D9D7D0] rounded-lg p-5 bg-[#FFFFFF] flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
-              <div className="space-y-1.5">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-white border border-[#E0E0E0] flex items-center justify-center font-bold text-xs text-[#0D47A1]">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-full bg-[#F0EFEA] border border-[#D9D7D0] flex items-center justify-center font-bold text-xs text-[#171717]">
                     {s.initial}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#212121]">{s.name}</h3>
-                    <p className="text-xs text-[#546E7A]">{s.practice} • {s.location}</p>
+                    <h3 className="text-sm font-bold text-[#171717]">{s.name}</h3>
+                    <p className="text-xs text-[#686868]">{s.practice} • {s.location}</p>
                   </div>
                 </div>
 
-                <div className="bg-blue-50/60 border border-blue-100 rounded p-2.5 text-xs text-[#1565C0] mt-2">
-                  <span className="font-semibold block mb-1">⚡ Suggested because:</span>
-                  <ul className="space-y-0.5 text-[#546E7A] text-[11px]">
+                <div className="bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg p-3 text-xs text-[#171717] mt-2">
+                  <span className="font-bold text-[#111111] block mb-1">Suggested because:</span>
+                  <ul className="space-y-1 text-[#686868] text-[11px]">
                     {s.reasons.map((r, rIdx) => (
                       <li key={rIdx} className="flex items-center">
-                        <span className="mr-1.5">•</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#111111] mr-2 shrink-0" />
                         {r}
                       </li>
                     ))}
@@ -202,13 +190,13 @@ export const NetworkPage: React.FC = () => {
 
               <div className="flex items-center space-x-2 shrink-0">
                 <Link to="/search">
-                  <Button variant="outline" size="sm" className="h-8 text-xs border-[#E0E0E0]">
-                    [ VIEW PROFILE ]
+                  <Button variant="secondary" size="sm" className="h-8 text-xs">
+                    View Profile
                   </Button>
                 </Link>
                 <Link to="/messages">
-                  <Button size="sm" className="h-8 text-xs bg-[#0D47A1] text-white hover:bg-[#0B3C8A]">
-                    [ CONNECT ]
+                  <Button variant="primary" size="sm" className="h-8 text-xs font-semibold">
+                    Connect
                   </Button>
                 </Link>
               </div>

@@ -27,27 +27,32 @@ export const AppLayout: React.FC = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
-      {/* Primary Navigation (Desktop & Mobile Top) */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+    <div className="min-h-screen bg-[#F7F6F2] flex flex-col font-sans text-[#171717]">
+      {/* Primary Navigation */}
+      <header className="bg-[#FFFFFF] border-b border-[#D9D7D0] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3 sm:space-x-8">
             {/* Hamburger button for mobile & tablet */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="md:hidden p-2 rounded-lg text-[#686868] hover:text-[#171717] hover:bg-[#E8E6DF] transition-colors"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
             <Link to="/discover" className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0D47A1] text-white flex items-center justify-center font-bold text-base shadow-xs">
+              <div className="w-8 h-8 rounded-lg bg-[#111111] text-white flex items-center justify-center font-bold text-sm shadow-xs">
                 ⚖
               </div>
-              <span className="font-black text-base sm:text-lg tracking-tight text-[#0D47A1] whitespace-nowrap">
-                LEGAL NETWORK
-              </span>
+              <div className="flex flex-col">
+                <span className="font-bold text-sm sm:text-base tracking-tight text-[#171717] whitespace-nowrap">
+                  LEGAL NETWORK
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-[#929292] -mt-0.5">
+                  Editorial AI Product
+                </span>
+              </div>
             </Link>
 
             <nav className="hidden md:flex space-x-1">
@@ -59,10 +64,10 @@ export const AppLayout: React.FC = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center px-3 py-2 rounded-xl text-xs lg:text-sm font-semibold transition-all ${
+                    className={`flex items-center px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-blue-50 text-[#0D47A1] font-bold border-b-2 border-[#0D47A1]'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        ? 'bg-[#E8E6DF] text-[#171717] font-semibold'
+                        : 'text-[#686868] hover:text-[#171717] hover:bg-[#E8E6DF]'
                     }`}
                   >
                     {item.icon}
@@ -76,29 +81,29 @@ export const AppLayout: React.FC = () => {
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Link
               to="/directory"
-              className="hidden sm:inline-flex items-center text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl hover:bg-emerald-100 transition-colors"
+              className="hidden sm:inline-flex items-center text-xs font-medium text-[#171717] bg-[#FFFFFF] border border-[#D9D7D0] px-3 py-1.5 rounded-lg hover:bg-[#E8E6DF] transition-colors"
             >
-              <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+              <ShieldCheck className="w-3.5 h-3.5 mr-1 text-[#2F6B4F]" />
               Claim Profile
             </Link>
 
             <Link
               to="/profile"
-              className={`flex items-center space-x-1.5 sm:space-x-2 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl border ${
+              className={`flex items-center space-x-1.5 sm:space-x-2 text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-lg border transition-colors ${
                 location.pathname === '/profile'
-                  ? 'border-[#0D47A1] text-[#0D47A1] bg-blue-50'
-                  : 'border-slate-200 text-slate-800 hover:bg-slate-50'
+                  ? 'border-[#111111] text-[#171717] bg-[#E8E6DF]'
+                  : 'border-[#D9D7D0] text-[#171717] bg-[#FFFFFF] hover:bg-[#E8E6DF]'
               }`}
             >
-              <User className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+              <User className="w-3.5 h-3.5 text-[#686868] shrink-0" />
               <span className="truncate max-w-[100px] sm:max-w-none">Adv. Kirubakaran</span>
             </Link>
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer / Slide-down */}
+        {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg animate-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden border-t border-[#D9D7D0] bg-[#FFFFFF] px-4 pt-2 pb-4 space-y-1 shadow-sm">
             {navItems.map((item) => {
               const isActive =
                 location.pathname === item.path ||
@@ -108,10 +113,10 @@ export const AppLayout: React.FC = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold transition-colors ${
+                  className={`flex items-center px-3.5 py-2.5 rounded-lg text-xs font-medium transition-colors ${
                     isActive
-                      ? 'bg-blue-50 text-[#0D47A1]'
-                      : 'text-slate-700 hover:bg-slate-50'
+                      ? 'bg-[#E8E6DF] text-[#171717] font-semibold'
+                      : 'text-[#686868] hover:bg-[#E8E6DF] hover:text-[#171717]'
                   }`}
                 >
                   {item.icon}
@@ -124,23 +129,23 @@ export const AppLayout: React.FC = () => {
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+      <footer className="bg-[#FFFFFF] border-t border-[#D9D7D0] py-6 text-xs text-[#929292]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 Legal Network. Professional Network for Indian Legal Practitioners.</p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
-            <Link to="/activity" className="text-[#1565C0] hover:underline flex items-center">
-              <Activity className="w-3.5 h-3.5 mr-1" />
+            <Link to="/activity" className="text-[#686868] hover:text-[#171717] flex items-center transition-colors">
+              <Activity className="w-3.5 h-3.5 mr-1 text-[#456B8C]" />
               AI Activity & Transparency
             </Link>
-            <Link to="/directory" className="text-slate-600 hover:underline">
+            <Link to="/directory" className="text-[#686868] hover:text-[#171717] transition-colors">
               Advocate Directory
             </Link>
-            <Link to="/profile" className="text-slate-600 hover:underline">
+            <Link to="/profile" className="text-[#686868] hover:text-[#171717] transition-colors">
               Settings & Privacy
             </Link>
           </div>
