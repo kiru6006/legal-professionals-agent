@@ -11,6 +11,7 @@ import { ActivityPage } from '@/pages/ActivityPage'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { CommunityPage } from '@/pages/CommunityPage'
 import { AIAssistPage } from '@/pages/AIAssistPage'
+import { DesignSystemShowcasePage } from '@/pages/DesignSystemShowcasePage'
 
 export const App: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ export const App: React.FC = () => {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="profile/ai-assist" element={<AIAssistPage />} />
+          <Route path="design-system" element={<DesignSystemShowcasePage />} />
           <Route path="*" element={<Navigate to="/discover" replace />} />
         </Route>
       </Routes>

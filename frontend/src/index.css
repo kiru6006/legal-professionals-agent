@@ -1,126 +1,85 @@
+@import './styles/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* ==========================================================================
-       GLOBAL DESIGN TOKEN SYSTEM
-       ========================================================================== */
-    --color-bg: #F7F6F2;
-    --color-surface: #FFFFFF;
-    --color-surface-muted: #F0EFEA;
-    --color-text-primary: #171717;
-    --color-text-secondary: #686868;
-    --color-text-muted: #929292;
-    --color-border: #D9D7D0;
-    --color-border-strong: #BDBAB1;
-    --color-primary: #111111;
-    --color-primary-soft: #E8E6DF;
-    --color-success: #2F6B4F;
-    --color-warning: #9A6A16;
-    --color-danger: #A63D40;
-    --color-info: #456B8C;
-
-    /* Shadcn/ui mapping to Global Design Tokens */
-    --background: var(--color-bg);
-    --foreground: var(--color-text-primary);
-
-    --card: var(--color-surface);
-    --card-foreground: var(--color-text-primary);
-
-    --popover: var(--color-surface);
-    --popover-foreground: var(--color-text-primary);
-
-    --primary: var(--color-primary);
-    --primary-foreground: #FFFFFF;
-
-    --secondary: var(--color-surface-muted);
-    --secondary-foreground: var(--color-text-primary);
-
-    --muted: var(--color-surface-muted);
-    --muted-foreground: var(--color-text-muted);
-
-    --accent: var(--color-primary-soft);
-    --accent-foreground: var(--color-text-primary);
-
-    --destructive: var(--color-danger);
-    --destructive-foreground: #FFFFFF;
-
-    --border: var(--color-border);
-    --input: var(--color-border);
-    --ring: var(--color-primary);
-
-    --radius: 0.5rem;
+  body {
+    background-color: var(--color-bg-main);
+    color: var(--color-text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
   }
 
-  .dark {
-    --color-bg: #141413;
-    --color-surface: #1E1E1C;
-    --color-surface-muted: #282825;
-    --color-text-primary: #F7F6F2;
-    --color-text-secondary: #BDBAB1;
-    --color-text-muted: #88867E;
-    --color-border: #2E2E2A;
-    --color-border-strong: #44433E;
-    --color-primary: #FFFFFF;
-    --color-primary-soft: #2A2A26;
-    --color-success: #4E9A74;
-    --color-warning: #C79234;
-    --color-danger: #C95A5D;
-    --color-info: #648BAF;
-
-    --background: var(--color-bg);
-    --foreground: var(--color-text-primary);
-    --card: var(--color-surface);
-    --card-foreground: var(--color-text-primary);
-    --popover: var(--color-surface);
-    --popover-foreground: var(--color-text-primary);
-    --primary: var(--color-primary);
-    --primary-foreground: #111111;
-    --secondary: var(--color-surface-muted);
-    --secondary-foreground: var(--color-text-primary);
-    --muted: var(--color-surface-muted);
-    --muted-foreground: var(--color-text-muted);
-    --accent: var(--color-primary-soft);
-    --accent-foreground: var(--color-text-primary);
-    --destructive: var(--color-danger);
-    --destructive-foreground: #FFFFFF;
-    --border: var(--color-border);
-    --input: var(--color-border);
-    --ring: var(--color-primary);
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  overflow-x: hidden;
+/* Card-Highlighted Table Specific Styling */
+.card-highlighted-table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-text-primary);
+.card-highlighted-table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 8px !important;
 }
 
-/* Minimal Editorial Card & Container Aesthetic */
-.card, [class*="rounded-xl border"], [class*="rounded-2xl border"] {
-  border-color: var(--color-border) !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+.card-highlighted-table thead tr th {
+  padding: 14px 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
 }
 
-/* Editorial Title Styles inspired by Minimal Design */
-.font-editorial {
-  font-family: 'Newsreader', 'Georgia', serif;
+.card-highlighted-table tbody tr.card-row {
+  background-color: var(--color-surface-white);
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.08);
+  transition: all 180ms ease-in-out;
 }
 
+.card-highlighted-table tbody tr.card-row td {
+  padding: 14px 16px;
+  border-top: 1px solid var(--color-table-row-border);
+  border-bottom: 1px solid var(--color-table-row-border);
+}
+
+.card-highlighted-table tbody tr.card-row td:first-child {
+  border-left: 1px solid var(--color-table-row-border);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  position: relative;
+}
+
+.card-highlighted-table tbody tr.card-row td:last-child {
+  border-right: 1px solid var(--color-table-row-border);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.card-highlighted-table tbody tr.card-row:hover {
+  background-color: var(--vignxs-hover);
+  box-shadow: 0 3px 8px 0 rgba(199, 2, 52, 0.1);
+}
+
+.card-highlighted-table tbody tr.card-row.is-selected {
+  background-color: var(--vignxs-selected);
+  box-shadow: 0 0 0 1.5px var(--vignxs-crimson);
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: var(--color-bg-main);
 }
 
 ::-webkit-scrollbar-thumb {

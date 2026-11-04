@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   Scale,
   Menu,
-  X
+  X,
+  Palette
 } from 'lucide-react'
 
 export const AppLayout: React.FC = () => {
@@ -24,6 +25,7 @@ export const AppLayout: React.FC = () => {
     { label: 'Services', path: '/services', icon: <Briefcase className="w-4 h-4 mr-2" /> },
     { label: 'Messages', path: '/messages', icon: <MessageSquare className="w-4 h-4 mr-2" /> },
     { label: 'AI Activity', path: '/activity', icon: <Activity className="w-4 h-4 mr-2" /> },
+    { label: 'Design System', path: '/design-system', icon: <Palette className="w-4 h-4 mr-2 text-[#C70234]" /> },
   ]
 
   return (
@@ -138,6 +140,10 @@ export const AppLayout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 Legal Network. Professional Network for Indian Legal Practitioners.</p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+            <Link to="/design-system" className="text-[#686868] hover:text-[#C70234] flex items-center transition-colors font-medium">
+              <Palette className="w-3.5 h-3.5 mr-1 text-[#C70234]" />
+              UI Design System Showcase
+            </Link>
             <Link to="/activity" className="text-[#686868] hover:text-[#171717] flex items-center transition-colors">
               <Activity className="w-3.5 h-3.5 mr-1 text-[#456B8C]" />
               AI Activity & Transparency

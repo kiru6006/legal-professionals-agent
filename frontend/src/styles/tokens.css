@@ -1,0 +1,127 @@
+/* ==========================================================================
+   VIBRANT GOOGLE-INSPIRED ENTERPRISE UI DESIGN SYSTEM TOKENS
+   ========================================================================== */
+
+:root {
+  /* Google-Inspired Primary Palette */
+  --google-blue: #4285F4;
+  --google-blue-strong: #1A73E8;
+  --google-red: #EA4335;
+  --google-red-dark: #D93025;
+  --google-yellow: #FBBC05;
+  --google-green: #34A853;
+  --google-green-dark: #188038;
+
+  /* Extended Vibrance Palette */
+  --color-purple: #A142F4;
+  --color-purple-dark: #8430C9;
+  --color-indigo: #5E5CE6;
+  --color-cyan: #00ACC1;
+  --color-orange: #FF8A00;
+  --color-pink: #E91E63;
+  --color-teal: #009688;
+  --color-lime: #7CB342;
+
+  /* Vignxs Crimson Editorial Brand Identity */
+  --vignxs-crimson: #C70234;
+  --vignxs-crimson-deep: #B6263A;
+  --vignxs-rose: #CD2C56;
+  --vignxs-rose-soft: #D25578;
+  --vignxs-pink-light: #E7B7C5;
+  --vignxs-hover: #FCEEF2;
+  --vignxs-selected: #F8E5EB;
+  --vignxs-soft: #FCE8EF;
+
+  /* Neutral Palette */
+  --color-bg-main: #F5F7FB;
+  --color-surface-white: #FFFFFF;
+  --color-surface-muted: #F1F3F4;
+  --color-surface-dark: #202124;
+  --color-code-bg: #111115;
+  --color-text-primary: #202124;
+  --color-text-secondary: #5F6368;
+  --color-text-muted: #80868B;
+  --color-border: #DADCE0;
+  --color-border-strong: #BDC1C6;
+  --color-table-row-border: #DFDADC;
+
+  /* Semantic Soft Backgrounds */
+  --semantic-primary-soft: #E8F0FE;
+  --semantic-success-soft: #E6F4EA;
+  --semantic-error-soft: #FCE8E6;
+  --semantic-warning-soft: #FEF7E0;
+  --semantic-ai-soft: #F3E8FD;
+  --semantic-info-soft: #E0F7FA;
+  --semantic-brand-soft: #FCE8EF;
+  --semantic-neutral-soft: #F1F3F4;
+
+  /* Standard shadcn/ui mapped variables */
+  --background: var(--color-bg-main);
+  --foreground: var(--color-text-primary);
+  --card: var(--color-surface-white);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-white);
+  --popover-foreground: var(--color-text-primary);
+  --primary: var(--google-blue-strong);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--color-surface-muted);
+  --secondary-foreground: var(--color-text-primary);
+  --muted: var(--color-surface-muted);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--semantic-primary-soft);
+  --accent-foreground: var(--google-blue-strong);
+  --destructive: var(--google-red);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --ring: var(--google-blue);
+  --radius: 0.75rem;
+}
+
+/* Dark Mode Tokens */
+.dark {
+  --color-bg-main: #131417;
+  --color-surface-white: #1E2024;
+  --color-surface-muted: #282A2E;
+  --color-surface-dark: #111115;
+  --color-code-bg: #0D0E11;
+  --color-text-primary: #F1F3F4;
+  --color-text-secondary: #BDC1C6;
+  --color-text-muted: #80868B;
+  --color-border: #32353B;
+  --color-border-strong: #454950;
+  --color-table-row-border: #353840;
+
+  /* Dark mode soft backgrounds */
+  --semantic-primary-soft: #1C2D4B;
+  --semantic-success-soft: #173824;
+  --semantic-error-soft: #3D1C1B;
+  --semantic-warning-soft: #3D3215;
+  --semantic-ai-soft: #2D1A45;
+  --semantic-info-soft: #10333D;
+  --semantic-brand-soft: #38131D;
+  --semantic-neutral-soft: #282A2E;
+
+  --vignxs-hover: #291219;
+  --vignxs-selected: #3B1621;
+
+  --background: var(--color-bg-main);
+  --foreground: var(--color-text-primary);
+  --card: var(--color-surface-white);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-white);
+  --popover-foreground: var(--color-text-primary);
+  --primary: var(--google-blue);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--color-surface-muted);
+  --secondary-foreground: var(--color-text-primary);
+  --muted: var(--color-surface-muted);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--semantic-primary-soft);
+  --accent-foreground: var(--google-blue);
+  --destructive: var(--google-red);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --ring: var(--google-blue);
+}
