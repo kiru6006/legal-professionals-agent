@@ -78,53 +78,63 @@ export const NetworkPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Title Header */}
-      <div className="border-b border-[#D9D7D0] pb-6">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
-          01 · COLLEAGUE DIRECTORY
+      <div className="border-b border-[#DADCE0] pb-6">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C70234] bg-[#FCE8EF] px-2 py-0.5 rounded border border-[#C70234]/20">
+            01 · COLLEAGUE DIRECTORY
+          </span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#80868B]">
+            PROFESSIONAL NETWORK
+          </span>
         </div>
-        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
-          My Professional <span className="italic font-serif">Network</span>
+        <h1 className="text-3xl font-editorial text-[#202124] font-normal tracking-tight">
+          My Professional <span className="italic font-serif text-[#C70234]">Network</span>
         </h1>
-        <p className="text-xs text-[#686868] mt-1">
+        <p className="text-xs text-[#5F6368] mt-1">
           Manage your verified professional peers, mutual connections, and referral colleagues.
         </p>
       </div>
 
       {/* MY CONNECTIONS */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
+      <section className="bg-white rounded-2xl border border-[#DADCE0] border-t-4 border-t-[#1A73E8] p-6 space-y-5 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#1A73E8] mb-0.5">
               GRAPH OVERVIEW
             </div>
-            <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
+            <h2 className="text-lg font-editorial text-[#202124] font-normal tracking-tight">
               Active Connections ({connections.length})
             </h2>
           </div>
-          <span className="text-xs text-[#686868] font-medium">Direct Colleague Graph</span>
+          <span className="text-xs font-semibold text-[#1A73E8] bg-[#E8F0FE] px-2.5 py-1 rounded-full border border-[#1A73E8]/20">
+            Direct Colleague Graph
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {connections.map((c) => (
             <div
               key={c.id}
-              className="border border-[#D9D7D0] rounded-lg p-4 bg-[#FFFFFF] hover:border-[#BDBAB1] transition-colors flex items-start justify-between gap-3"
+              className="border border-[#DADCE0] border-l-4 border-l-[#1A73E8] rounded-xl p-4 bg-white hover:shadow-md hover:border-l-[#C70234] transition-all flex items-start justify-between gap-3 shadow-2xs"
             >
               <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#F0EFEA] border border-[#D9D7D0] flex items-center justify-center font-bold text-xs text-[#171717] shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F0FE] border border-[#1A73E8]/30 flex items-center justify-center font-bold text-xs text-[#1A73E8] shrink-0">
                   {c.initial}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#171717] flex items-center gap-1.5">
+                  <h3 className="text-sm font-bold text-[#202124] flex items-center gap-1.5">
                     {c.name}
                     {c.verified && (
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#2F6B4F]" />
+                      <span className="inline-flex items-center text-[10px] font-bold text-[#188038] bg-[#E6F4EA] px-1.5 py-0.5 rounded-full border border-[#34A853]/20">
+                        <ShieldCheck className="w-3 h-3 mr-0.5 text-[#34A853]" />
+                        Verified
+                      </span>
                     )}
                   </h3>
-                  <p className="text-xs text-[#686868] font-medium">{c.role}</p>
-                  <p className="text-xs text-[#171717] mt-1 font-semibold">{c.practice}</p>
-                  <p className="text-[11px] text-[#929292] flex items-center mt-1">
-                    <MapPin className="w-3 h-3 mr-1 text-[#929292]" />
+                  <p className="text-xs text-[#5F6368] font-medium">{c.role}</p>
+                  <p className="text-xs text-[#202124] mt-1 font-semibold">{c.practice}</p>
+                  <p className="text-[11px] text-[#80868B] flex items-center mt-1">
+                    <MapPin className="w-3 h-3 mr-1 text-[#C70234]" />
                     {c.location} • {c.experience}
                   </p>
                 </div>
@@ -134,7 +144,7 @@ export const NetworkPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleUnconnect(c.id)}
-                  className="text-[11px] text-[#A63D40] hover:bg-[#F0EFEA] border border-[#D9D7D0] bg-[#FFFFFF] px-2 py-1 rounded transition-colors shrink-0 font-medium"
+                  className="text-[11px] text-[#EA4335] hover:bg-[#FCE8E6] border border-[#EA4335]/30 bg-white px-2 py-1 rounded-lg transition-colors shrink-0 font-medium"
                 >
                   Unconnect
                 </button>
@@ -145,15 +155,17 @@ export const NetworkPage: React.FC = () => {
       </section>
 
       {/* SUGGESTED PROFESSIONALS (AI-RECOMMENDED) */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
+      <section className="bg-white rounded-2xl border border-[#DADCE0] border-t-4 border-t-[#A142F4] p-6 space-y-5 shadow-sm">
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
-            02 · RECOMMENDATIONS
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#A142F4] bg-[#F3E8FD] px-1.5 py-0.5 rounded border border-[#A142F4]/20">
+              02 · AI RECOMMENDATIONS
+            </span>
           </div>
-          <h2 className="text-xl font-editorial text-[#171717] font-normal tracking-tight">
-            Suggested <span className="italic font-serif">Professionals</span>
+          <h2 className="text-xl font-editorial text-[#202124] font-normal tracking-tight">
+            Suggested <span className="italic font-serif text-[#C70234]">Professionals</span>
           </h2>
-          <p className="text-xs text-[#686868] mt-0.5">
+          <p className="text-xs text-[#5F6368] mt-0.5">
             Transparent reasoning based on Bar records and court jurisdiction overlap:
           </p>
         </div>
@@ -162,25 +174,25 @@ export const NetworkPage: React.FC = () => {
           {suggested.map((s, idx) => (
             <div
               key={idx}
-              className="border border-[#D9D7D0] rounded-lg p-5 bg-[#FFFFFF] flex flex-col md:flex-row md:items-center justify-between gap-4"
+              className="border border-[#DADCE0] border-l-4 border-l-[#A142F4] rounded-xl p-5 bg-white flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs hover:shadow-sm transition-all"
             >
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full bg-[#F0EFEA] border border-[#D9D7D0] flex items-center justify-center font-bold text-xs text-[#171717]">
+                  <div className="w-8 h-8 rounded-lg bg-[#F3E8FD] border border-[#A142F4]/30 flex items-center justify-center font-bold text-xs text-[#A142F4]">
                     {s.initial}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#171717]">{s.name}</h3>
-                    <p className="text-xs text-[#686868]">{s.practice} • {s.location}</p>
+                    <h3 className="text-sm font-bold text-[#202124]">{s.name}</h3>
+                    <p className="text-xs text-[#5F6368]">{s.practice} • {s.location}</p>
                   </div>
                 </div>
 
-                <div className="bg-[#F0EFEA] border border-[#D9D7D0] rounded-lg p-3 text-xs text-[#171717] mt-2">
-                  <span className="font-bold text-[#111111] block mb-1">Suggested because:</span>
-                  <ul className="space-y-1 text-[#686868] text-[11px]">
+                <div className="bg-[#F3E8FD]/60 border border-[#A142F4]/20 rounded-xl p-3 text-xs text-[#202124] mt-2">
+                  <span className="font-bold text-[#A142F4] block mb-1">Suggested because:</span>
+                  <ul className="space-y-1 text-[#5F6368] text-[11px]">
                     {s.reasons.map((r, rIdx) => (
                       <li key={rIdx} className="flex items-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#111111] mr-2 shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#A142F4] mr-2 shrink-0" />
                         {r}
                       </li>
                     ))}
@@ -195,7 +207,7 @@ export const NetworkPage: React.FC = () => {
                   </Button>
                 </Link>
                 <Link to="/messages">
-                  <Button variant="primary" size="sm" className="h-8 text-xs font-semibold">
+                  <Button variant="brand" size="sm" className="h-8 text-xs font-semibold">
                     Connect
                   </Button>
                 </Link>

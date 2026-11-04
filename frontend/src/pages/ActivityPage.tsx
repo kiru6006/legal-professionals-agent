@@ -1,154 +1,168 @@
 import React from 'react'
-import { Search, Sparkles, Check } from 'lucide-react'
+import { Search, Sparkles, Check, ShieldCheck, Zap } from 'lucide-react'
+import { KPICard } from '@/components/cards/KPICard'
 
 export const ActivityPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="border-b border-[#D9D7D0] pb-6">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
-          01 · AUDIT LOG & TRANSPARENCY
+      <div className="border-b border-[#DADCE0] pb-6">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C70234] bg-[#FCE8EF] px-2 py-0.5 rounded border border-[#C70234]/20">
+            01 · AUDIT LOG
+          </span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#80868B]">
+            TRANSPARENCY & DETERMINISM
+          </span>
         </div>
-        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
-          AI Activity & <span className="italic font-serif">Transparency</span>
+        <h1 className="text-3xl font-editorial text-[#202124] font-normal tracking-tight">
+          AI Activity & <span className="italic font-serif text-[#C70234]">Transparency</span>
         </h1>
-        <p className="text-xs text-[#686868] mt-1">
+        <p className="text-xs text-[#5F6368] mt-1">
           This audit log shows deterministic AI actions performed on your behalf, data sources accessed, and grounding reasoning.
         </p>
       </div>
 
+      {/* KPI Cards Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KPICard
+          color="blue"
+          icon={<Search className="w-5 h-5 text-[#1A73E8]" />}
+          metric="14"
+          title="Searches Grounded"
+          change="+18.5%"
+          changeLabel="vs last week"
+          supportingText="Zero hallucinations"
+        />
+        <KPICard
+          color="purple"
+          icon={<Sparkles className="w-5 h-5 text-[#A142F4]" />}
+          metric="6"
+          title="Recommendations"
+          change="+12.0%"
+          changeLabel="vs last week"
+          supportingText="Bar graph validated"
+        />
+        <KPICard
+          color="green"
+          icon={<ShieldCheck className="w-5 h-5 text-[#34A853]" />}
+          metric="100%"
+          title="Verification Rate"
+          change="Deterministic"
+          changeLabel="100% verified"
+          supportingText="Bar Council roll linked"
+        />
+        <KPICard
+          color="crimson"
+          icon={<Zap className="w-5 h-5 text-[#C70234]" />}
+          metric="320ms"
+          title="Avg AI Latency"
+          change="-24.2%"
+          changeType="positive"
+          changeLabel="faster response"
+          supportingText="Cached vector indexes"
+        />
+      </div>
+
       {/* TODAY'S AI ACTIVITY */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
+      <section className="bg-white rounded-2xl border border-[#DADCE0] border-t-4 border-t-[#1A73E8] p-6 space-y-5 shadow-sm">
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-[#1A73E8] mb-0.5">
             LOGS (TODAY)
           </div>
-          <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
+          <h2 className="text-lg font-editorial text-[#202124] font-normal tracking-tight">
             Today&apos;s AI Activity
           </h2>
         </div>
 
         <div className="space-y-3 text-xs">
-          <div className="p-4 rounded-lg border border-[#D9D7D0] bg-[#F0EFEA] space-y-2">
+          <div className="p-4 rounded-xl border border-[#DADCE0] border-l-4 border-l-[#1A73E8] bg-[#F8F9FA] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#171717] flex items-center">
-                <Search className="w-3.5 h-3.5 mr-2 text-[#111111]" />
+              <span className="font-bold text-[#202124] flex items-center">
+                <Search className="w-3.5 h-3.5 mr-2 text-[#1A73E8]" />
                 1. Professional Search (08:45 AM)
               </span>
-              <span className="text-[#929292] text-[11px]">Today</span>
+              <span className="text-[#1A73E8] bg-[#E8F0FE] px-2 py-0.5 rounded-full text-[10px] font-bold">Today</span>
             </div>
-            <div className="text-[#686868] space-y-1 pl-5">
-              <p>• Agent: <b className="text-[#171717]">Discovery + Grounding Engine</b></p>
+            <div className="text-[#5F6368] space-y-1 pl-5">
+              <p>• Agent: <b className="text-[#202124]">Discovery + Grounding Engine</b></p>
               <p>• Query: <i>&ldquo;Criminal lawyer in Salem with appellate experience&rdquo;</i></p>
-              <p>• Data Sources: <b className="text-[#171717]">Tamil Nadu Bar Council Directory, Verified Profiles, Service Taxonomy</b></p>
-              <p>• Results: <b className="text-[#171717]">7 explainable matches identified</b> (zero hallucinations)</p>
+              <p>• Data Sources: <b className="text-[#202124]">Tamil Nadu Bar Council Directory, Verified Profiles, Service Taxonomy</b></p>
+              <p>• Results: <b className="text-[#188038]">7 explainable matches identified</b> (zero hallucinations)</p>
             </div>
           </div>
 
-          <div className="p-4 rounded-lg border border-[#D9D7D0] bg-[#F0EFEA] space-y-2">
+          <div className="p-4 rounded-xl border border-[#DADCE0] border-l-4 border-l-[#A142F4] bg-[#F8F9FA] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#171717] flex items-center">
-                <Sparkles className="w-3.5 h-3.5 mr-2 text-[#111111]" />
+              <span className="font-bold text-[#202124] flex items-center">
+                <Sparkles className="w-3.5 h-3.5 mr-2 text-[#A142F4]" />
                 2. Network Recommendation (08:30 AM)
               </span>
-              <span className="text-[#929292] text-[11px]">Today</span>
+              <span className="text-[#A142F4] bg-[#F3E8FD] px-2 py-0.5 rounded-full text-[10px] font-bold">Today</span>
             </div>
-            <div className="text-[#686868] space-y-1 pl-5">
-              <p>• Agent: <b className="text-[#171717]">Recommendation Graph Engine</b></p>
+            <div className="text-[#5F6368] space-y-1 pl-5">
+              <p>• Agent: <b className="text-[#202124]">Recommendation Graph Engine</b></p>
               <p>• Type: Suggested peers for homepage feed</p>
-              <p>• Data Sources: <b className="text-[#171717]">Shared Bar Council affiliations, mutual referrals, court appearances</b></p>
-              <p>• Results: <b className="text-[#171717]">Adv. Ramesh Kumar, Adv. Priya Sharma</b></p>
+              <p>• Data Sources: <b className="text-[#202124]">Shared Bar Council affiliations, mutual referrals, court appearances</b></p>
+              <p>• Results: <b className="text-[#202124]">Adv. Ramesh Kumar, Adv. Priya Sharma</b></p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* THIS WEEK'S AI ACTIVITY SUMMARY */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-4">
-        <div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
-            METRICS
-          </div>
-          <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
-            Weekly Activity Summary
-          </h2>
-        </div>
-        <div className="divide-y divide-[#D9D7D0] text-xs">
-          <div className="py-3 flex justify-between text-[#171717]">
-            <span>Professional Search</span>
-            <span className="font-mono text-[#686868]">3 searches executed</span>
-          </div>
-          <div className="py-3 flex justify-between text-[#171717]">
-            <span>Service Request Matching</span>
-            <span className="font-mono text-[#686868]">1 match coordinated</span>
-          </div>
-          <div className="py-3 flex justify-between text-[#171717]">
-            <span>Referral Recommendations</span>
-            <span className="font-mono text-[#686868]">2 recommendations generated</span>
-          </div>
-          <div className="py-3 flex justify-between text-[#171717]">
-            <span>Profile Insights Grounding</span>
-            <span className="font-mono text-[#686868]">1 view verified</span>
           </div>
         </div>
       </section>
 
       {/* DATA USED BY AI AGENTS */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5">
+      <section className="bg-white rounded-2xl border border-[#DADCE0] p-6 space-y-5 shadow-sm">
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-[#C70234] mb-0.5">
             DATA ACCESS AUDIT
           </div>
-          <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
-            Data Used by AI Agents
+          <h2 className="text-lg font-editorial text-[#202124] font-normal tracking-tight">
+            Verified Data Sources
           </h2>
-          <p className="text-xs text-[#686868] mt-0.5">
-            The following data is strictly used for deterministic discovery under your explicit authorization:
+          <p className="text-xs text-[#5F6368] mt-0.5">
+            Deterministic systems rely exclusively on confirmed bar registries and direct peer endorsements:
           </p>
         </div>
 
-        <ul className="space-y-2.5 text-xs text-[#171717]">
-          <li className="flex items-center">
-            <Check className="w-4 h-4 mr-2.5 text-[#2F6B4F] shrink-0" />
-            <span>Your professional profile (full name, bar enrollment TN/2015/12345, bar association)</span>
-          </li>
-          <li className="flex items-center">
-            <Check className="w-4 h-4 mr-2.5 text-[#2F6B4F] shrink-0" />
-            <span>Your declared practice areas and offered services</span>
-          </li>
-          <li className="flex items-center">
-            <Check className="w-4 h-4 mr-2.5 text-[#2F6B4F] shrink-0" />
-            <span>Primary district & court appearances (High Court, Principal Sessions Court)</span>
-          </li>
-          <li className="flex items-center">
-            <Check className="w-4 h-4 mr-2.5 text-[#2F6B4F] shrink-0" />
-            <span>Your search requirements (processed in memory, not permanently retained)</span>
-          </li>
-        </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          {[
+            { title: 'Bar Council Registry', count: '30,000+ Records', color: 'border-l-[#188038] bg-[#E6F4EA]/40 text-[#188038]' },
+            { title: 'Court Appearance Docket', count: '12 Jurisdictions', color: 'border-l-[#1A73E8] bg-[#E8F0FE]/40 text-[#1A73E8]' },
+            { title: 'Peer Endorsements', count: '100% Deterministic', color: 'border-l-[#C70234] bg-[#FCE8EF]/40 text-[#C70234]' },
+          ].map((ds, idx) => (
+            <div key={idx} className={`p-4 rounded-xl border border-[#DADCE0] border-l-4 ${ds.color}`}>
+              <div className="flex items-center gap-1.5 font-bold text-[#202124]">
+                <Check className="w-3.5 h-3.5" />
+                {ds.title}
+              </div>
+              <div className="text-[11px] font-semibold mt-1 opacity-90">{ds.count}</div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* HOW AI AGENTS WORK */}
-      <section className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6 space-y-5 text-xs">
+      <section className="bg-white rounded-2xl border border-[#DADCE0] p-6 space-y-5 text-xs shadow-sm">
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-0.5">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-[#80868B] mb-0.5">
             SYSTEM GOVERNANCE
           </div>
-          <h2 className="text-lg font-editorial text-[#171717] font-normal tracking-tight">
+          <h2 className="text-lg font-editorial text-[#202124] font-normal tracking-tight">
             How AI Agents Work (Zero-Hallucination Governance)
           </h2>
         </div>
 
         <div className="space-y-3">
-          <div className="p-4 bg-[#F0EFEA] rounded-lg border border-[#D9D7D0]">
-            <span className="font-bold text-[#171717] block mb-1">Discovery Agent</span>
-            <p className="text-[#686868]">
+          <div className="p-4 bg-[#F8F9FA] rounded-xl border border-[#DADCE0] border-l-4 border-l-[#1A73E8]">
+            <span className="font-bold text-[#202124] block mb-1">Discovery Agent</span>
+            <p className="text-[#5F6368]">
               Translates natural language legal requirements into structured SQL parameters. Searches only verified databases and presents explicit match reasoning.
             </p>
           </div>
 
-          <div className="p-4 bg-[#F0EFEA] rounded-lg border border-[#D9D7D0]">
-            <span className="font-bold text-[#171717] block mb-1">Matching Agent</span>
-            <p className="text-[#686868]">
+          <div className="p-4 bg-[#F8F9FA] rounded-xl border border-[#DADCE0] border-l-4 border-l-[#C70234]">
+            <span className="font-bold text-[#202124] block mb-1">Matching Agent</span>
+            <p className="text-[#5F6368]">
               Matches formal service requests (court appearances, local counsel) to practitioners based on declared availability and jurisdiction. Never automatically contacts anyone.
             </p>
           </div>

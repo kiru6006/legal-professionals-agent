@@ -106,53 +106,60 @@ export const MessagesPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      <div className="border-b border-[#D9D7D0] pb-6">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-[#929292] mb-1">
-          01 · ENCRYPTED CONSULTATION
+      <div className="border-b border-[#DADCE0] pb-6">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C70234] bg-[#FCE8EF] px-2 py-0.5 rounded border border-[#C70234]/20">
+            01 · ENCRYPTED CONSULTATION
+          </span>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#80868B]">
+            MESSAGING & REFERRALS
+          </span>
         </div>
-        <h1 className="text-3xl font-editorial text-[#171717] font-normal tracking-tight">
-          Professional <span className="italic font-serif">Messages</span>
+        <h1 className="text-3xl font-editorial text-[#202124] font-normal tracking-tight">
+          Professional <span className="italic font-serif text-[#C70234]">Messages</span>
         </h1>
-        <p className="text-xs text-[#686868] mt-1">
+        <p className="text-xs text-[#5F6368] mt-1">
           Encrypted 1-to-1 professional dialogue, service coordination, and referral briefings.
         </p>
       </div>
 
       {/* Two-column Layout */}
-      <div className="bg-[#FFFFFF] border border-[#D9D7D0] rounded-xl overflow-hidden shadow-xs grid grid-cols-1 md:grid-cols-12 min-h-[580px]">
+      <div className="bg-white border border-[#DADCE0] border-t-4 border-t-[#C70234] rounded-2xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 min-h-[580px]">
         {/* Left Column: Conversations List */}
-        <div className="md:col-span-4 border-r border-[#D9D7D0] bg-[#F0EFEA] flex flex-col">
-          <div className="p-4 border-b border-[#D9D7D0] bg-[#FFFFFF]">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#929292]">
-              CONVERSATIONS
+        <div className="md:col-span-4 border-r border-[#DADCE0] bg-[#F8F9FA] flex flex-col">
+          <div className="p-4 border-b border-[#DADCE0] bg-white">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#80868B]">
+              CONVERSATIONS ({conversations.length})
             </span>
           </div>
 
-          <div className="divide-y divide-[#D9D7D0] overflow-y-auto flex-1">
+          <div className="divide-y divide-[#DADCE0] overflow-y-auto flex-1">
             {conversations.map((conv) => {
               const isActive = conv.id === activeConvId
               return (
                 <div
                   key={conv.id}
                   onClick={() => setActiveConvId(conv.id)}
-                  className={`p-4 cursor-pointer transition-colors ${
-                    isActive ? 'bg-[#FFFFFF] border-l-4 border-[#111111]' : 'hover:bg-[#E8E6DF]'
+                  className={`p-4 cursor-pointer transition-all ${
+                    isActive
+                      ? 'bg-white border-l-4 border-l-[#1A73E8] shadow-xs'
+                      : 'hover:bg-[#F1F3F4]'
                   }`}
                 >
                   <div className="flex items-start justify-between">
-                    <span className="text-xs font-bold text-[#171717]">{conv.advocate}</span>
-                    <span className="text-[10px] text-[#929292]">{conv.time}</span>
+                    <span className="text-xs font-bold text-[#202124]">{conv.advocate}</span>
+                    <span className="text-[10px] text-[#80868B]">{conv.time}</span>
                   </div>
-                  <p className="text-[11px] text-[#686868] mt-0.5">{conv.role}</p>
+                  <p className="text-[11px] text-[#5F6368] mt-0.5">{conv.role}</p>
 
                   {conv.isServiceRequest && (
-                    <div className="mt-1.5 inline-flex items-center text-[10px] font-semibold text-[#171717] bg-[#F0EFEA] px-2 py-0.5 rounded border border-[#D9D7D0]">
+                    <div className="mt-1.5 inline-flex items-center text-[10px] font-bold text-[#C70234] bg-[#FCE8EF] px-2 py-0.5 rounded-full border border-[#C70234]/20">
                       <Scale className="w-3 h-3 mr-1" />
                       SERVICE REQUEST
                     </div>
                   )}
 
-                  <p className="text-xs text-[#686868] mt-1.5 truncate leading-tight">
+                  <p className="text-xs text-[#5F6368] mt-1.5 truncate leading-tight">
                     {conv.lastMessage}
                   </p>
                 </div>
@@ -162,24 +169,24 @@ export const MessagesPage: React.FC = () => {
         </div>
 
         {/* Right Column: Active Thread */}
-        <div className="md:col-span-8 flex flex-col bg-[#FFFFFF]">
+        <div className="md:col-span-8 flex flex-col bg-white">
           {/* Header */}
-          <div className="p-4 border-b border-[#D9D7D0] flex items-center justify-between bg-[#F0EFEA]">
+          <div className="p-4 border-b border-[#DADCE0] flex items-center justify-between bg-white">
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-[#171717]">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-[#202124]">
                 CONVERSATION WITH {activeConversation.advocate.toUpperCase()}
               </h2>
-              <span className="text-[11px] text-[#686868]">{activeConversation.role}</span>
+              <span className="text-[11px] text-[#5F6368]">{activeConversation.role}</span>
             </div>
             {activeConversation.isServiceRequest && (
-              <span className="text-xs font-semibold text-[#2F6B4F] bg-[#FFFFFF] px-2.5 py-1 rounded border border-[#D9D7D0]">
+              <span className="text-xs font-semibold text-[#188038] bg-[#E6F4EA] px-2.5 py-1 rounded-full border border-[#34A853]/30">
                 Active Service Matter
               </span>
             )}
           </div>
 
           {/* Messages Thread */}
-          <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-[#F7F6F2]">
+          <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-[#F5F7FB]">
             {currentMessages.map((msg, idx) => (
               <div
                 key={idx}
@@ -187,14 +194,14 @@ export const MessagesPage: React.FC = () => {
                   msg.sender === 'user' ? 'items-end' : 'items-start'
                 }`}
               >
-                <span className="text-[10px] font-bold text-[#929292] mb-1">
+                <span className="text-[10px] font-bold text-[#80868B] mb-1">
                   {msg.sender === 'user' ? 'YOU' : activeConversation.advocate.toUpperCase()} • {msg.time}
                 </span>
                 <div
-                  className={`max-w-md p-3.5 rounded-lg text-xs leading-relaxed ${
+                  className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed shadow-xs ${
                     msg.sender === 'user'
-                      ? 'bg-[#111111] text-white rounded-br-none shadow-xs'
-                      : 'bg-[#FFFFFF] border border-[#D9D7D0] text-[#171717] rounded-bl-none shadow-xs'
+                      ? 'bg-[#1A73E8] text-white rounded-br-xs'
+                      : 'bg-white border border-[#DADCE0] text-[#202124] rounded-bl-xs'
                   }`}
                 >
                   {msg.text}
@@ -206,14 +213,14 @@ export const MessagesPage: React.FC = () => {
           {/* Message Input & Action Bar */}
           <form
             onSubmit={handleSendMessage}
-            className="p-3.5 border-t border-[#D9D7D0] bg-[#FFFFFF] flex items-center gap-2"
+            className="p-3.5 border-t border-[#DADCE0] bg-white flex items-center gap-2"
           >
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Type your message..."
-              className="flex-1 px-3.5 py-2.5 text-xs bg-[#FFFFFF] border border-[#D9D7D0] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#111111] text-[#171717] placeholder-[#929292]"
+              className="flex-1 px-3.5 py-2.5 text-xs bg-white border border-[#DADCE0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1A73E8] focus:border-[#1A73E8] text-[#202124] placeholder-[#80868B]"
             />
             <Button
               type="submit"
@@ -225,7 +232,7 @@ export const MessagesPage: React.FC = () => {
             </Button>
             <Button
               type="button"
-              variant="secondary"
+              variant="brand"
               size="sm"
               className="h-9 text-xs"
             >

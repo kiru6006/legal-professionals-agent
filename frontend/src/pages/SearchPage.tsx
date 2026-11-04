@@ -158,7 +158,7 @@ export const SearchPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* ──────────────── Top Search Input Bar ──────────────── */}
-      <div className="bg-[#FFFFFF] rounded-xl border border-[#D9D7D0] p-6">
+      <div className="bg-white rounded-2xl border border-[#DADCE0] border-t-4 border-t-[#C70234] p-6 shadow-sm">
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -167,15 +167,15 @@ export const SearchPage: React.FC = () => {
           className="space-y-4"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#171717] flex items-center">
-              <Sparkles className="w-3.5 h-3.5 mr-1.5 text-[#111111]" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#A142F4] bg-[#F3E8FD] px-2.5 py-1 rounded-full border border-[#A142F4]/20 flex items-center">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5 text-[#A142F4]" />
               AI Natural Language Professional Search
             </span>
             {stage !== 'input' && (
               <button
                 type="button"
                 onClick={() => setStage('input')}
-                className="text-xs text-[#686868] hover:text-[#171717] underline"
+                className="text-xs text-[#1A73E8] hover:underline font-semibold"
               >
                 Reset Search
               </button>
@@ -188,7 +188,7 @@ export const SearchPage: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Describe your legal requirement in plain language..."
-              className="w-full pl-4 pr-36 py-3.5 bg-[#FFFFFF] border border-[#D9D7D0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#111111] focus:border-[#111111] text-[#171717] placeholder-[#929292]"
+              className="w-full pl-4 pr-36 py-3.5 bg-white border border-[#DADCE0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A73E8] focus:border-[#1A73E8] text-[#202124] placeholder-[#80868B] shadow-xs"
             />
             <Button
               type="submit"
@@ -209,7 +209,7 @@ export const SearchPage: React.FC = () => {
 
           {/* Sample Prompts */}
           <div className="flex items-center flex-wrap gap-2 pt-1 text-xs">
-            <span className="text-[#929292] font-medium mr-1 text-[11px] uppercase tracking-wider">Try asking:</span>
+            <span className="text-[#80868B] font-semibold mr-1 text-[11px] uppercase tracking-wider">Try asking:</span>
             {sampleQueries.map((sample, idx) => (
               <button
                 key={idx}
@@ -218,7 +218,7 @@ export const SearchPage: React.FC = () => {
                   setQuery(sample)
                   handleAnalyzeQuery(sample)
                 }}
-                className="bg-[#F0EFEA] hover:bg-[#E8E6DF] text-[#171717] px-2.5 py-1 rounded-md border border-[#D9D7D0] transition-colors text-xs"
+                className="bg-[#E8F0FE] hover:bg-[#D2E3FC] text-[#1A73E8] px-2.5 py-1 rounded-lg border border-[#1A73E8]/20 transition-all text-xs font-medium"
               >
                 &ldquo;{sample}&rdquo;
               </button>
