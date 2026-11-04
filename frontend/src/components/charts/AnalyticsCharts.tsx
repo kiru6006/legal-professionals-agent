@@ -246,3 +246,4 @@ export const MiniSparkline: React.FC<{ data: number[]; color?: string }> = ({
     </div>
   )
 }
+

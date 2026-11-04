@@ -167,3 +167,4 @@ export const AppTabs: React.FC<AppTabsProps> = ({
     </div>
   )
 }
+
