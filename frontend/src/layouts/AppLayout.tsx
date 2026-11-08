@@ -69,11 +69,10 @@ export const AppLayout: React.FC = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-colors ${
-                      isActive
+                    className={`flex items-center px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-colors ${isActive
                         ? 'bg-[#E8F0FE] text-[#1A73E8] font-semibold shadow-xs'
                         : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
-                    }`}
+                      }`}
                   >
                     {item.icon}
                     {item.label}
@@ -94,11 +93,10 @@ export const AppLayout: React.FC = () => {
 
             <Link
               to="/profile"
-              className={`flex items-center space-x-1.5 sm:space-x-2 text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-lg border transition-colors ${
-                location.pathname === '/profile'
+              className={`flex items-center space-x-1.5 sm:space-x-2 text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-lg border transition-colors ${location.pathname === '/profile'
                   ? 'border-[#1A73E8] text-[#1A73E8] bg-[#E8F0FE]'
                   : 'border-[#DADCE0] text-[#202124] bg-white hover:bg-[#F1F3F4]'
-              }`}
+                }`}
             >
               <User className="w-3.5 h-3.5 text-[#5F6368] shrink-0" />
               <span className="truncate max-w-[100px] sm:max-w-none font-medium">Adv. Kirubakaran</span>
@@ -118,11 +116,10 @@ export const AppLayout: React.FC = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center px-3.5 py-2.5 rounded-lg text-xs font-medium transition-colors ${
-                    isActive
+                  className={`flex items-center px-3.5 py-2.5 rounded-lg text-xs font-medium transition-colors ${isActive
                       ? 'bg-[#E8F0FE] text-[#1A73E8] font-semibold'
                       : 'text-[#5F6368] hover:bg-[#F1F3F4] hover:text-[#202124]'
-                  }`}
+                    }`}
                 >
                   {item.icon}
                   {item.label}

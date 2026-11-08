@@ -140,11 +140,10 @@ export const MessagesPage: React.FC = () => {
                 <div
                   key={conv.id}
                   onClick={() => setActiveConvId(conv.id)}
-                  className={`p-4 cursor-pointer transition-all ${
-                    isActive
+                  className={`p-4 cursor-pointer transition-all ${isActive
                       ? 'bg-white border-l-4 border-l-[#1A73E8] shadow-xs'
                       : 'hover:bg-[#F1F3F4]'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <span className="text-xs font-bold text-[#202124]">{conv.advocate}</span>
@@ -190,19 +189,17 @@ export const MessagesPage: React.FC = () => {
             {currentMessages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`flex flex-col ${
-                  msg.sender === 'user' ? 'items-end' : 'items-start'
-                }`}
+                className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'
+                  }`}
               >
                 <span className="text-[10px] font-bold text-[#80868B] mb-1">
                   {msg.sender === 'user' ? 'YOU' : activeConversation.advocate.toUpperCase()} • {msg.time}
                 </span>
                 <div
-                  className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed shadow-xs ${
-                    msg.sender === 'user'
+                  className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed shadow-xs ${msg.sender === 'user'
                       ? 'bg-[#1A73E8] text-white rounded-br-xs'
                       : 'bg-white border border-[#DADCE0] text-[#202124] rounded-bl-xs'
-                  }`}
+                    }`}
                 >
                   {msg.text}
                 </div>

@@ -264,11 +264,10 @@ export const ServicesPage: React.FC = () => {
           {offeredServices.map((svc, idx) => (
             <div
               key={idx}
-              className={`p-3.5 rounded-lg border flex items-center justify-between ${
-                svc.active
+              className={`p-3.5 rounded-lg border flex items-center justify-between ${svc.active
                   ? 'bg-[#F0EFEA] border-[#D9D7D0] text-[#171717]'
                   : 'bg-[#FFFFFF] border-[#D9D7D0] text-[#929292]'
-              }`}
+                }`}
             >
               <span className="font-semibold">{svc.active ? '✓' : '○'} {svc.title}</span>
               <span className="text-[10px] uppercase font-bold tracking-wider text-[#929292]">{svc.category}</span>
